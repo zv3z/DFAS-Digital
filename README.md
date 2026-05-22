@@ -19,6 +19,9 @@ DFAS-Digital/
 └── docs/ · tests/ · reports/
 ```
 
+ codex/suggest-professional-cybersecurity-tools-qzqig5
+## المحركات المنفذة حالياً
+
  codex/suggest-professional-cybersecurity-tools-87pago
 ## المحركات المنفذة حالياً
 
@@ -42,10 +45,15 @@ DFAS-Digital/
 
 افتح `index.html` مباشرة في المتصفح — لا خادم ولا إنترنت مطلوب.
 
+ codex/suggest-professional-cybersecurity-tools-qzqig5
+تمت إضافة Motion Graphic تفاعلية في الصفحة الرئيسية مع مراعاة تقليل الحركة (Reduced Motion).
+
+
  codex/suggest-professional-cybersecurity-tools-87pago
 تمت إضافة Motion Graphic تفاعلية في الصفحة الرئيسية مع مراعاة تقليل الحركة (Reduced Motion).
 
 تمت إضافة Motion Graphic تفاعلية في الصفحة الرئيسية + خارطة تطوير لمحركات MOD-11 → MOD-16.
+
 
 
 ## التقنيات
