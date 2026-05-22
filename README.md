@@ -19,7 +19,11 @@ DFAS-Digital/
 └── docs/ · tests/ · reports/
 ```
 
+ codex/suggest-professional-cybersecurity-tools-87pago
+## المحركات المنفذة حالياً
+
 ## المحركات (المنفذة + خارطة التطوير)
+
 
 | | المحرك | الوصف |
 |-|--------|-------|
@@ -28,12 +32,21 @@ DFAS-Digital/
 | MOD-03 | جنائيات الصور | EXIF/XMP + ELA Analysis |
 | MOD-04 | ترويسات البريد | SPF/DKIM/DMARC |
 | MOD-05 | البصمة الرقمية | SHA-256 / SHA-1 / MD5 |
+| MOD-06 | كاشف IOC | مؤشرات اختراق + Regex + Risk Score |
+| MOD-07 | كاشف الإخفاء | LSB/Chi-Square/Entropy |
+| MOD-08 | الخط الزمني الرقمي | استخراج timestamps وكشف الشذوذ |
+| MOD-09 | تحليل سجلات الشبكة | Apache/Nginx/Syslog + Anomaly Detection |
+| MOD-10 | MITRE ATT&CK Mapper | Mapping للتكتيكات والتقنيات |
 
 ## التشغيل
 
 افتح `index.html` مباشرة في المتصفح — لا خادم ولا إنترنت مطلوب.
 
+ codex/suggest-professional-cybersecurity-tools-87pago
+تمت إضافة Motion Graphic تفاعلية في الصفحة الرئيسية مع مراعاة تقليل الحركة (Reduced Motion).
+
 تمت إضافة Motion Graphic تفاعلية في الصفحة الرئيسية + خارطة تطوير لمحركات MOD-11 → MOD-16.
+
 
 ## التقنيات
 

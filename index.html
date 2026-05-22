@@ -298,6 +298,15 @@ table.dtbl{width:100%;border-collapse:collapse;font-size:11.5px;}
 .mc-stats{display:flex;gap:6px;flex-wrap:wrap;}
 .ms{font-size:8.5px;font-family:var(--mono);padding:2px 7px;border-radius:2px;background:var(--s3);color:var(--t3);border:1px solid var(--b1);}
 
+
+.motion-wrap{position:relative;}
+.motion-canvas{width:100%;height:220px;background:linear-gradient(180deg,var(--s2),var(--s1));border:1px solid var(--b1);border-radius:10px;display:block;}
+.motion-meta{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap;}
+.motion-legend{display:flex;gap:8px;flex-wrap:wrap;}
+.motion-chip{font-size:9px;font-family:var(--mono);padding:2px 8px;border-radius:999px;border:1px solid var(--b1);color:var(--t2);background:var(--s2);}
+.motion-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:4px;}
+.motion-note{font-size:10px;color:var(--t3);font-family:var(--mono);}
+
 /* SCORE ROW */
 .srow{display:grid;grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:9px;margin-bottom:15px;}
 .scell{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r8);padding:12px 10px;text-align:center;}
@@ -407,7 +416,21 @@ table.dtbl{width:100%;border-collapse:collapse;font-size:11.5px;}
       <div class="card-hd"><div class="card-ttl"><div class="card-ico">🛰️</div>Cyber Motion Graph — مشهد تفاعلي مباشر</div><span class="card-meta">REAL-TIME</span></div>
       <div class="card-bd">
         <p style="font-size:12px;color:var(--t2);line-height:1.8;margin-bottom:10px;">تصوير بصري تفاعلي لتدفق الأدلة والعلاقات بين مؤشرات الاختراق والهجمات المحتملة. حرّك المؤشر داخل اللوحة لملاحظة ترابط العقد.</p>
+codex/suggest-professional-cybersecurity-tools-87pago
+        <div class="motion-wrap">
+          <canvas id="threat-motion" class="motion-canvas" aria-label="مخطط تفاعلي لعلاقات مؤشرات التهديد" role="img"></canvas>
+          <div class="motion-meta">
+            <div class="motion-legend">
+              <span class="motion-chip"><span class="motion-dot" style="background:#10b981"></span>عقد آمنة</span>
+              <span class="motion-chip"><span class="motion-dot" style="background:#f59e0b"></span>مؤشرات تحذير</span>
+              <span class="motion-chip"><span class="motion-dot" style="background:#ef4444"></span>مؤشرات حرجة</span>
+            </div>
+            <div class="motion-note" id="motion-state">INTERACTIVE / REAL-TIME</div>
+          </div>
+        </div>
+
         <canvas id="threat-motion" style="width:100%;height:220px;background:linear-gradient(180deg,var(--s2),var(--s1));border:1px solid var(--b1);border-radius:10px;"></canvas>
+
       </div>
     </div>
 

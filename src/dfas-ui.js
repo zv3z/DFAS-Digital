@@ -802,8 +802,15 @@ function initThreatMotion() {
   const cv = $('threat-motion');
   if (!cv) return;
   const ctx = cv.getContext('2d');
+ codex/suggest-professional-cybersecurity-tools-87pago
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const motionState = $('motion-state');
+  const ptr = { x: 0, y: 0, on: false };
+  const nodes = Array.from({ length: reduceMotion ? 12 : 24 }, (_, i) => ({
+
   const ptr = { x: 0, y: 0, on: false };
   const nodes = Array.from({ length: 24 }, (_, i) => ({
+
     x: 40 + (i % 8) * 90 + Math.random()*20,
     y: 30 + Math.floor(i / 8) * 70 + Math.random()*25,
     vx: (Math.random() - 0.5) * 0.6,
@@ -828,6 +835,10 @@ function initThreatMotion() {
   cv.addEventListener('mouseleave', () => { ptr.on = false; });
 
   const colors = ['#10b981', '#f59e0b', '#ef4444'];
+ codex/suggest-professional-cybersecurity-tools-87pago
+  let rafId = 0;
+
+
   function tick() {
     ctx.clearRect(0,0,cv.width,cv.height);
     for (const n of nodes) {
@@ -856,7 +867,35 @@ function initThreatMotion() {
       ctx.fillStyle = colors[n.risk];
       ctx.beginPath(); ctx.arc(n.x,n.y,3.6,0,Math.PI*2); ctx.fill();
     }
+ codex/suggest-professional-cybersecurity-tools-87pago
+    rafId = requestAnimationFrame(tick);
+  }
+
+  if (reduceMotion) {
+    if (motionState) motionState.textContent = 'REDUCED MOTION / STATIC VIEW';
+    ctx.clearRect(0,0,cv.width,cv.height);
+    for (const n of nodes) {
+      ctx.fillStyle = colors[n.risk];
+      ctx.beginPath(); ctx.arc(n.x,n.y,3.6,0,Math.PI*2); ctx.fill();
+    }
+    return;
+  }
+
+  if (motionState) motionState.textContent = 'INTERACTIVE / REAL-TIME';
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && rafId) {
+      cancelAnimationFrame(rafId);
+      if (motionState) motionState.textContent = 'PAUSED (TAB INACTIVE)';
+    } else if (!document.hidden) {
+      if (motionState) motionState.textContent = 'INTERACTIVE / REAL-TIME';
+      tick();
+    }
+  });
+
+
     requestAnimationFrame(tick);
   }
+
   tick();
 }
