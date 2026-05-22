@@ -13,13 +13,20 @@ DFAS-Digital/
 ├── index.html          # المنصة الرئيسية الكاملة
 ├── src/
 │   ├── dfas-db.js      # Backend — قاعدة بيانات IndexedDB
-│   ├── dfas-engines.js # Analysis Engines MOD-01 → MOD-05
+│   ├── dfas-engines.js # Analysis Engines MOD-01 → MOD-16
 │   ├── dfas-charts.js  # SVG + Canvas Charts
 │   └── dfas-ui.js      # UI Controller + Dashboard
 └── docs/ · tests/ · reports/
 ```
 
+ codex/suggest-professional-cybersecurity-tools-qzqig5
 ## المحركات المنفذة حالياً
+
+ codex/suggest-professional-cybersecurity-tools-87pago
+## المحركات المنفذة حالياً
+
+## المحركات (المنفذة + خارطة التطوير)
+
 
 | | المحرك | الوصف |
 |-|--------|-------|
@@ -38,7 +45,16 @@ DFAS-Digital/
 
 افتح `index.html` مباشرة في المتصفح — لا خادم ولا إنترنت مطلوب.
 
+ codex/suggest-professional-cybersecurity-tools-qzqig5
 تمت إضافة Motion Graphic تفاعلية في الصفحة الرئيسية مع مراعاة تقليل الحركة (Reduced Motion).
+
+
+ codex/suggest-professional-cybersecurity-tools-87pago
+تمت إضافة Motion Graphic تفاعلية في الصفحة الرئيسية مع مراعاة تقليل الحركة (Reduced Motion).
+
+تمت إضافة Motion Graphic تفاعلية في الصفحة الرئيسية + خارطة تطوير لمحركات MOD-11 → MOD-16.
+
+
 
 ## التقنيات
 
