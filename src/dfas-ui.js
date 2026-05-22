@@ -29,6 +29,9 @@ window.addEventListener('DOMContentLoaded', async () => {
   // Particle background
   DFAS_Charts.initParticles('bg');
 
+  // Interactive motion graphic
+  initThreatMotion();
+
   // Open DB
   try { await DFAS_DB.open(); } catch(e) { console.warn('IndexedDB unavailable:', e); }
 
@@ -791,4 +794,95 @@ async function clearAllData() {
     if ($('hkpi-total')) $('hkpi-total').textContent = '0';
     if ($('rep-out')) { $('rep-out').innerHTML = ''; $('rep-out').classList.remove('on'); }
   } catch(e) { alert('فشل المسح: ' + e.message); }
+}
+
+
+/* ── Interactive Motion Graphic ── */
+function initThreatMotion() {
+  const cv = $('threat-motion');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const motionState = $('motion-state');
+  const ptr = { x: 0, y: 0, on: false };
+  const nodes = Array.from({ length: reduceMotion ? 12 : 24 }, (_, i) => ({
+    x: 40 + (i % 8) * 90 + Math.random()*20,
+    y: 30 + Math.floor(i / 8) * 70 + Math.random()*25,
+    vx: (Math.random() - 0.5) * 0.6,
+    vy: (Math.random() - 0.5) * 0.6,
+    risk: i % 5 === 0 ? 2 : i % 3 === 0 ? 1 : 0
+  }));
+
+  function resize() {
+    const r = cv.getBoundingClientRect();
+    cv.width = Math.max(320, Math.floor(r.width));
+    cv.height = Math.max(180, Math.floor(r.height));
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  cv.addEventListener('mousemove', e => {
+    const r = cv.getBoundingClientRect();
+    ptr.x = e.clientX - r.left;
+    ptr.y = e.clientY - r.top;
+    ptr.on = true;
+  });
+  cv.addEventListener('mouseleave', () => { ptr.on = false; });
+
+  const colors = ['#10b981', '#f59e0b', '#ef4444'];
+  let rafId = 0;
+  function tick() {
+    ctx.clearRect(0,0,cv.width,cv.height);
+    for (const n of nodes) {
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < 8 || n.x > cv.width - 8) n.vx *= -1;
+      if (n.y < 8 || n.y > cv.height - 8) n.vy *= -1;
+    }
+    for (let i=0;i<nodes.length;i++) for (let j=i+1;j<nodes.length;j++) {
+      const a=nodes[i], b=nodes[j];
+      const d = Math.hypot(a.x-b.x, a.y-b.y);
+      if (d < 95) {
+        ctx.strokeStyle = `rgba(34,211,238,${(1-d/95)*0.25})`;
+        ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+      }
+    }
+    if (ptr.on) {
+      for (const n of nodes) {
+        const d = Math.hypot(ptr.x-n.x, ptr.y-n.y);
+        if (d < 110) {
+          n.vx += (ptr.x-n.x) * 0.00002;
+          n.vy += (ptr.y-n.y) * 0.00002;
+        }
+      }
+    }
+    for (const n of nodes) {
+      ctx.fillStyle = colors[n.risk];
+      ctx.beginPath(); ctx.arc(n.x,n.y,3.6,0,Math.PI*2); ctx.fill();
+    }
+    rafId = requestAnimationFrame(tick);
+  }
+
+  if (reduceMotion) {
+    if (motionState) motionState.textContent = 'REDUCED MOTION / STATIC VIEW';
+    ctx.clearRect(0,0,cv.width,cv.height);
+    for (const n of nodes) {
+      ctx.fillStyle = colors[n.risk];
+      ctx.beginPath(); ctx.arc(n.x,n.y,3.6,0,Math.PI*2); ctx.fill();
+    }
+    return;
+  }
+
+  if (motionState) motionState.textContent = 'INTERACTIVE / REAL-TIME';
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && rafId) {
+      cancelAnimationFrame(rafId);
+      if (motionState) motionState.textContent = 'PAUSED (TAB INACTIVE)';
+    } else if (!document.hidden) {
+      if (motionState) motionState.textContent = 'INTERACTIVE / REAL-TIME';
+      tick();
+    }
+  });
+
+  tick();
 }
