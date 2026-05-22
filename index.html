@@ -3,110 +3,119 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data: blob:;">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="DENY">
 <meta name="robots" content="noindex, nofollow">
-<title>DFAS — Digital Forensics Analysis System</title>
+<title>DFAS v2 — منصة تحليل الجرائم الرقمية</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --void:#04060a; --base:#070b10; --s1:#0b1018; --s2:#0f1520; --s3:#131c28;
-  --b1:#1a2535; --b2:#243040; --ba:#2d4a6e;
-  --pri:#0ea5e9; --pri-d:rgba(14,165,233,0.12); --pri-g:rgba(14,165,233,0.25);
-  --amb:#f59e0b; --amb-d:rgba(245,158,11,0.12);
-  --red:#ef4444; --red-d:rgba(239,68,68,0.12);
-  --grn:#10b981; --grn-d:rgba(16,185,129,0.12);
-  --vio:#8b5cf6;
-  --t1:#e8f0f8; --t2:#8fa4be; --t3:#4d6480; --tm:#7dd3fc;
-  --ui:'IBM Plex Sans Arabic',sans-serif;
-  --mono:'IBM Plex Mono',monospace;
-  --r4:4px; --r8:8px; --r12:12px;
+:root{
+  --void:#03050a;--base:#070c12;--s1:#0b1119;--s2:#0f1622;--s3:#141d2b;
+  --b1:#1b2737;--b2:#253245;--ba:#2e4c70;
+  --pri:#0ea5e9;--pri-d:rgba(14,165,233,.12);--pri-glow:0 0 24px rgba(14,165,233,.18);
+  --amb:#f59e0b;--amb-d:rgba(245,158,11,.12);
+  --red:#ef4444;--red-d:rgba(239,68,68,.12);
+  --grn:#10b981;--grn-d:rgba(16,185,129,.12);
+  --vio:#8b5cf6;--cya:#22d3ee;
+  --t1:#e9f1fa;--t2:#8fa6c0;--t3:#4d6682;--t4:#2a3d52;--tm:#7dd3fc;
+  --ui:'IBM Plex Sans Arabic',sans-serif;--mono:'IBM Plex Mono',monospace;
+  --r4:4px;--r8:8px;--r12:12px;--r16:16px;
+  --sb:240px;--top:54px;--tr:.2s cubic-bezier(.4,0,.2,1);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{font-family:var(--ui);background:var(--void);color:var(--t1);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
-body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(ellipse 80% 60% at 50% -20%,rgba(14,165,233,0.05) 0%,transparent 60%);pointer-events:none;z-index:0;}
-body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--b1) 1px,transparent 1px),linear-gradient(90deg,var(--b1) 1px,transparent 1px);background-size:48px 48px;opacity:0.3;pointer-events:none;z-index:0;}
-.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 18px;}
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;}
+.bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(var(--b1) 1px,transparent 1px),linear-gradient(90deg,var(--b1) 1px,transparent 1px);background-size:52px 52px;opacity:.2;}
+.bg-glow{position:fixed;top:-20%;left:50%;transform:translateX(-50%);width:900px;height:500px;background:radial-gradient(ellipse at 50% 0%,rgba(14,165,233,.06) 0%,transparent 65%);pointer-events:none;z-index:0;}
 
-/* HEADER */
-.hdr{border-bottom:1px solid var(--b1);background:linear-gradient(180deg,rgba(14,165,233,0.04),transparent);padding:0 18px;}
-.hdr-in{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:62px;gap:12px;}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
-.logo-mk{width:34px;height:34px;border:1.5px solid var(--pri);border-radius:var(--r4);display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--pri-d),transparent);}
-.logo-t{display:flex;flex-direction:column;gap:1px;}
-.logo-title{font-size:14px;font-weight:700;color:var(--t1);letter-spacing:.5px;}
-.logo-sub{font-size:9px;color:var(--t3);font-family:var(--mono);letter-spacing:2px;text-transform:uppercase;}
-.hdr-right{display:flex;align-items:center;gap:16px;}
-.pill{display:flex;align-items:center;gap:5px;background:var(--grn-d);border:1px solid rgba(16,185,129,.25);color:var(--grn);font-size:10px;font-family:var(--mono);padding:4px 11px;border-radius:20px;letter-spacing:1px;}
-.dot{width:5px;height:5px;border-radius:50%;background:var(--grn);animation:pd 2s ease-in-out infinite;}
-@keyframes pd{0%,100%{opacity:1;}50%{opacity:.35;}}
-.sid{font-size:9px;font-family:var(--mono);color:var(--t3);letter-spacing:1px;}
+/* SIDEBAR */
+.sb{position:fixed;top:0;right:0;width:var(--sb);height:100vh;background:linear-gradient(180deg,var(--s1),var(--base));border-left:1px solid var(--b1);z-index:200;display:flex;flex-direction:column;transition:transform var(--tr);}
+.sb-logo{padding:16px 14px 13px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer;}
+.sb-mark{width:36px;height:36px;flex-shrink:0;border:1.5px solid var(--pri);border-radius:var(--r8);display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--pri-d),transparent);box-shadow:var(--pri-glow);}
+.sb-txt{display:flex;flex-direction:column;gap:1px;}
+.sb-title{font-size:15px;font-weight:700;color:var(--t1);letter-spacing:.4px;}
+.sb-sub{font-size:8px;color:var(--t3);font-family:var(--mono);letter-spacing:2px;text-transform:uppercase;}
+.sb-nav{flex:1;padding:8px;overflow-y:auto;}
+.sb-sec{font-size:8px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:2px;padding:10px 8px 5px;font-family:var(--mono);}
+.ni{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:var(--r8);cursor:pointer;color:var(--t3);font-size:12.5px;font-weight:500;transition:all var(--tr);margin-bottom:2px;border:1px solid transparent;user-select:none;}
+.ni:hover{background:var(--s2);color:var(--t1);border-color:var(--b1);}
+.ni.active{background:var(--pri-d);color:var(--pri);border-color:rgba(14,165,233,.2);box-shadow:inset 3px 0 0 var(--pri);}
+.ni-ico{width:26px;text-align:center;font-size:14px;flex-shrink:0;}
+.ni-badge{margin-right:auto;font-size:8.5px;font-family:var(--mono);padding:1px 7px;border-radius:10px;background:var(--s3);color:var(--t3);border:1px solid var(--b1);}
+.ni-badge.new{background:rgba(16,185,129,.12);color:var(--grn);border-color:rgba(16,185,129,.3);}
+.sb-foot{padding:10px 13px;border-top:1px solid var(--b1);}
+.sb-dot{width:6px;height:6px;border-radius:50%;background:var(--grn);box-shadow:0 0 6px var(--grn);animation:pp 2s ease-in-out infinite;display:inline-block;}
+@keyframes pp{0%,100%{opacity:1;}50%{opacity:.5;}}
+.sb-status{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
+.sb-stxt{font-size:10px;font-family:var(--mono);color:var(--grn);letter-spacing:.8px;}
+.sb-clock{font-size:10px;font-family:var(--mono);color:var(--t3);}
+.sb-sid{font-size:8px;font-family:var(--mono);color:var(--t4);margin-top:3px;word-break:break-all;}
 
-/* HERO */
-.hero{padding:44px 0 32px;text-align:center;}
-.cls-banner{display:inline-flex;align-items:center;gap:6px;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.2);color:#f87171;font-size:9px;font-family:var(--mono);letter-spacing:3px;padding:4px 14px;border-radius:2px;margin-bottom:20px;text-transform:uppercase;}
-.hero h1{font-size:clamp(22px,4vw,40px);font-weight:700;color:var(--t1);letter-spacing:-.5px;line-height:1.15;margin-bottom:10px;}
-.hero h1 em{font-style:normal;color:var(--pri);}
-.hero-desc{font-size:13px;color:var(--t2);max-width:540px;margin:0 auto 24px;line-height:1.7;}
-.hero-kpi{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;}
-.kpi{display:flex;flex-direction:column;align-items:center;gap:2px;}
-.kpi-v{font-size:20px;font-weight:700;font-family:var(--mono);color:var(--pri);}
-.kpi-l{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:1.5px;}
-.div{height:1px;background:linear-gradient(90deg,transparent,var(--b2),transparent);margin:6px 0 28px;}
+/* MAIN */
+.main{margin-right:var(--sb);min-height:100vh;display:flex;flex-direction:column;position:relative;z-index:1;}
+.topbar{position:sticky;top:0;z-index:100;height:var(--top);background:rgba(7,12,18,.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--b1);display:flex;align-items:center;padding:0 20px;gap:12px;}
+.tb-burger{display:none;background:none;border:none;color:var(--t2);cursor:pointer;font-size:18px;padding:4px;}
+.tb-bread{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--t3);}
+.tb-bread .cur{color:var(--t1);font-weight:600;}
+.tb-right{margin-right:auto;display:flex;align-items:center;gap:10px;}
+.tlp{font-size:9px;font-family:var(--mono);padding:3px 10px;border-radius:2px;letter-spacing:2px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);color:var(--amb);}
+.ops{display:flex;align-items:center;gap:5px;font-size:10px;font-family:var(--mono);padding:3px 10px;border-radius:20px;background:var(--grn-d);border:1px solid rgba(16,185,129,.25);color:var(--grn);}
 
-/* MODULES */
-.mods{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:24px;}
-@media(max-width:680px){.mods{grid-template-columns:1fr 1fr;}}
-.mod{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r8);padding:13px 10px;cursor:pointer;color:var(--t2);font-family:var(--ui);font-size:12px;font-weight:600;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:7px;position:relative;overflow:hidden;}
-.mod::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--pri);transform:scaleX(0);transition:transform .2s;}
-.mod:hover{border-color:var(--ba);color:var(--t1);background:var(--s2);}
-.mod:hover::before,.mod.on::before{transform:scaleX(1);}
-.mod.on{border-color:var(--pri);background:var(--pri-d);color:var(--pri);box-shadow:0 0 18px rgba(14,165,233,.1);}
-.mod-ico{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:15px;background:var(--s2);border:1px solid var(--b1);transition:all .2s;}
-.mod.on .mod-ico{background:rgba(14,165,233,.15);border-color:rgba(14,165,233,.3);}
-.mod-lbl{text-align:center;line-height:1.3;}
-.mod-code{font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:1px;margin-top:1px;}
-.mod.on .mod-code{color:rgba(14,165,233,.55);}
-
-/* PANELS */
-.panel{display:none;animation:fu .3s ease;}
-.panel.on{display:block;}
+/* CONTENT */
+.content{flex:1;padding:22px 20px 40px;max-width:1120px;width:100%;margin:0 auto;}
+.page{display:none;animation:fu .28s ease;}
+.page.active{display:block;}
 @keyframes fu{from{opacity:0;transform:translateY(7px);}to{opacity:1;transform:translateY(0);}}
 
-/* CARD */
-.card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r12);margin-bottom:14px;overflow:hidden;box-shadow:0 4px 22px rgba(0,0,0,.45);}
-.card-hd{padding:14px 18px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(90deg,var(--s2),var(--s1));}
-.card-ttl{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600;color:var(--t1);}
-.card-ico{width:26px;height:26px;background:var(--pri-d);border:1px solid rgba(14,165,233,.2);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:13px;}
+/* CARDS */
+.card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r12);margin-bottom:16px;overflow:hidden;box-shadow:0 4px 28px rgba(0,0,0,.5);}
+.card-hd{padding:13px 17px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(90deg,rgba(14,165,233,.04),transparent);}
+.card-ttl{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:700;color:var(--t1);}
+.card-ico{width:27px;height:27px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;background:var(--pri-d);border:1px solid rgba(14,165,233,.18);}
 .card-meta{font-size:9px;font-family:var(--mono);color:var(--t3);letter-spacing:1px;}
-.card-bd{padding:18px;}
+.card-bd{padding:17px;}
 
-/* FORM */
-.flbl{display:block;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
-textarea,input[type=text]{width:100%;background:var(--s2);border:1px solid var(--b2);border-radius:var(--r8);padding:12px 14px;color:var(--t1);font-family:var(--mono);font-size:12px;line-height:1.6;resize:vertical;transition:border-color .2s,box-shadow .2s;direction:rtl;}
-textarea:focus,input:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(14,165,233,.07),inset 0 1px 3px rgba(0,0,0,.3);}
-textarea{min-height:126px;}
-textarea::placeholder,input::placeholder{color:var(--t3);font-family:var(--ui);font-size:12px;}
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
+.kpi-card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r12);padding:15px 17px;position:relative;overflow:hidden;transition:border-color var(--tr);}
+.kpi-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--kc,var(--pri));opacity:.7;}
+.kpi-card:hover{border-color:var(--ba);}
+.kpi-lbl{font-size:9.5px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:7px;font-family:var(--mono);}
+.kpi-val{font-size:30px;font-weight:700;font-family:var(--mono);color:var(--kc,var(--pri));line-height:1;}
+.kpi-ico{position:absolute;top:13px;left:13px;font-size:20px;opacity:.1;}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.g65{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;}
+@media(max-width:820px){.g2,.g3,.g65{grid-template-columns:1fr;}}
+
+/* FORMS */
+.flbl{display:block;font-size:9.5px;font-weight:700;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;font-family:var(--mono);}
+textarea,input[type=text]{width:100%;background:var(--s2);border:1px solid var(--b2);border-radius:var(--r8);padding:11px 13px;color:var(--t1);font-family:var(--mono);font-size:12px;line-height:1.65;resize:vertical;transition:border-color var(--tr),box-shadow var(--tr);}
+textarea:focus,input:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(14,165,233,.07);}
+textarea{min-height:130px;}
+textarea::placeholder,input::placeholder{color:var(--t4);font-family:var(--ui);font-size:12px;}
 
 /* BUTTONS */
-.brow{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px;}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border:none;border-radius:var(--r8);font-family:var(--ui);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;}
-.btn-p{background:var(--pri);color:#000f1a;}
-.btn-p:hover{background:#38bdf8;box-shadow:0 4px 18px rgba(14,165,233,.35);transform:translateY(-1px);}
-.btn-p:active{transform:translateY(0);}
-.btn-g{background:var(--s2);border:1px solid var(--b2);color:var(--t2);}
-.btn-g:hover{border-color:var(--ba);color:var(--t1);}
-.btn-d{background:var(--red-d);border:1px solid rgba(239,68,68,.25);color:var(--red);}
+.br{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 17px;border:none;border-radius:var(--r8);font-family:var(--ui);font-size:12.5px;font-weight:600;cursor:pointer;transition:all var(--tr);white-space:nowrap;}
+.btn-p{background:var(--pri);color:#001828;}
+.btn-p:hover{background:#38bdf8;box-shadow:0 4px 20px rgba(14,165,233,.3);transform:translateY(-1px);}
+.btn-p:active{transform:none;}
+.btn-s{background:var(--s2);border:1px solid var(--b2);color:var(--t2);}
+.btn-s:hover{border-color:var(--ba);color:var(--t1);}
+.btn-d{background:var(--red-d);border:1px solid rgba(239,68,68,.22);color:var(--red);}
 .btn-d:hover{background:rgba(239,68,68,.18);}
+.btn-sm{padding:6px 13px;font-size:11.5px;}
 
 /* LOADER */
-.ldr{display:none;align-items:center;gap:10px;padding:12px 0;font-size:11px;font-family:var(--mono);color:var(--pri);letter-spacing:.4px;}
+.ldr{display:none;align-items:center;gap:9px;padding:13px 0;font-size:11px;font-family:var(--mono);color:var(--pri);}
 .ldr.on{display:flex;}
-.ldr-bar{flex:1;height:2px;background:var(--b1);border-radius:1px;overflow:hidden;max-width:180px;}
-.ldr-fill{height:100%;background:linear-gradient(90deg,var(--pri),var(--vio));border-radius:1px;animation:la 1.5s ease-in-out infinite;}
-@keyframes la{0%{width:0%;margin-left:0;}50%{width:65%;margin-left:0%;}100%{width:0%;margin-left:100%;}}
+.ldr-bar{flex:1;height:2px;background:var(--b1);border-radius:1px;overflow:hidden;max-width:190px;}
+.ldr-fill{height:100%;background:linear-gradient(90deg,var(--pri),var(--vio));animation:la 1.4s ease-in-out infinite;}
+@keyframes la{0%{width:0%;margin-right:100%;}50%{width:60%;margin-right:0%;}100%{width:0%;}}
 .ldr-step{font-size:9px;color:var(--t3);}
 
 /* RESULT */
@@ -114,690 +123,594 @@ textarea::placeholder,input::placeholder{color:var(--t3);font-family:var(--ui);f
 .res.on{display:block;}
 
 /* VERDICT */
-.vrd{border-radius:var(--r8);padding:13px 16px;margin-bottom:14px;display:flex;align-items:center;gap:11px;border:1px solid;}
-.vrd.crit{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.3);}
-.vrd.warn{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.3);}
-.vrd.safe{background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.3);}
-.vrd-ico{font-size:20px;flex-shrink:0;}
-.vrd-main{flex:1;}
-.vrd-title{font-size:13px;font-weight:700;margin-bottom:2px;}
-.vrd.crit .vrd-title{color:var(--red);}
-.vrd.warn .vrd-title{color:var(--amb);}
-.vrd.safe .vrd-title{color:var(--grn);}
-.vrd-desc{font-size:11.5px;color:var(--t2);line-height:1.5;}
-.vrd-sc{font-size:26px;font-weight:700;font-family:var(--mono);flex-shrink:0;}
+.vrd{border-radius:10px;padding:13px 16px;margin-bottom:15px;display:flex;align-items:center;gap:11px;border:1px solid;}
+.vrd.crit{background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.27);}
+.vrd.warn{background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.27);}
+.vrd.safe{background:rgba(16,185,129,.07);border-color:rgba(16,185,129,.27);}
+.vrd-ico{font-size:21px;flex-shrink:0;}
+.vrd-body{flex:1;}
+.vrd-ttl{font-size:13px;font-weight:700;margin-bottom:3px;}
+.vrd.crit .vrd-ttl{color:var(--red);}
+.vrd.warn .vrd-ttl{color:var(--amb);}
+.vrd.safe .vrd-ttl{color:var(--grn);}
+.vrd-desc{font-size:11.5px;color:var(--t2);line-height:1.55;}
+.vrd-sc{font-size:28px;font-weight:700;font-family:var(--mono);flex-shrink:0;}
 .vrd.crit .vrd-sc{color:var(--red);}
 .vrd.warn .vrd-sc{color:var(--amb);}
 .vrd.safe .vrd-sc{color:var(--grn);}
 
 /* GAUGE */
-.gauge{margin-bottom:16px;}
-.gauge-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
-.gauge-lbl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1.5px;}
-.gauge-val{font-size:10px;font-family:var(--mono);color:var(--t2);}
-.gauge-track{height:4px;background:var(--s3);border-radius:2px;overflow:hidden;}
-.gauge-fill{height:100%;border-radius:2px;transition:width 1.1s cubic-bezier(.4,0,.2,1);width:0%;}
-.gf-crit{background:linear-gradient(90deg,var(--amb),var(--red));}
-.gf-warn{background:linear-gradient(90deg,var(--pri),var(--amb));}
-.gf-safe{background:linear-gradient(90deg,var(--grn),var(--pri));}
+.gw{margin-bottom:14px;}
+.gh{display:flex;justify-content:space-between;margin-bottom:5px;}
+.gl{font-size:9.5px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1.5px;}
+.gv{font-size:9.5px;font-family:var(--mono);color:var(--t2);}
+.gt{height:5px;background:var(--s3);border-radius:3px;overflow:hidden;}
+.gf{height:100%;border-radius:3px;transition:width 1.1s cubic-bezier(.4,0,.2,1);width:0%;}
+.gf-c{background:linear-gradient(90deg,var(--amb),var(--red));}
+.gf-w{background:linear-gradient(90deg,var(--pri),var(--amb));}
+.gf-s{background:linear-gradient(90deg,var(--grn),var(--cya));}
 
 /* FINDINGS */
-.findings-hd{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:2px;padding-bottom:7px;border-bottom:1px solid var(--b1);margin-bottom:9px;}
-.fi{display:flex;gap:10px;padding:10px 12px;border-radius:var(--r4);margin-bottom:3px;border:1px solid transparent;transition:all .15s;}
+.fhd{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:2px;padding-bottom:7px;border-bottom:1px solid var(--b1);margin-bottom:9px;}
+.fi{display:flex;gap:10px;padding:10px 12px;border-radius:var(--r8);margin-bottom:4px;border:1px solid transparent;transition:all .15s;}
 .fi:hover{background:var(--s2);border-color:var(--b1);}
-.fi-sev{flex-shrink:0;width:52px;display:flex;align-items:center;justify-content:center;}
-.sev{font-size:8px;font-weight:700;font-family:var(--mono);letter-spacing:1px;padding:2px 6px;border-radius:2px;text-transform:uppercase;}
-.sc{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3);}
-.sh{background:rgba(245,158,11,.15);color:var(--amb);border:1px solid rgba(245,158,11,.3);}
-.sm{background:rgba(14,165,233,.12);color:var(--pri);border:1px solid rgba(14,165,233,.25);}
-.sl{background:rgba(16,185,129,.1);color:var(--grn);border:1px solid rgba(16,185,129,.2);}
-.si{background:rgba(139,92,246,.12);color:var(--vio);border:1px solid rgba(139,92,246,.25);}
-.fi-c{flex:1;min-width:0;}
-.fi-rule{font-size:12px;font-weight:600;color:var(--t1);margin-bottom:2px;}
-.fi-det{font-size:11px;color:var(--t2);line-height:1.5;}
-.fi-ev{font-family:var(--mono);font-size:10px;background:var(--s3);border:1px solid var(--b1);border-radius:3px;padding:3px 7px;margin-top:4px;color:var(--tm);word-break:break-all;display:inline-block;}
+.fi-sv{flex-shrink:0;width:56px;display:flex;align-items:flex-start;justify-content:center;padding-top:1px;}
+.sv{font-size:8px;font-weight:700;font-family:var(--mono);letter-spacing:.8px;padding:2px 6px;border-radius:3px;text-transform:uppercase;}
+.sv-CRITICAL{background:rgba(239,68,68,.14);color:var(--red);border:1px solid rgba(239,68,68,.28);}
+.sv-HIGH    {background:rgba(245,158,11,.14);color:var(--amb);border:1px solid rgba(245,158,11,.28);}
+.sv-MEDIUM  {background:rgba(14,165,233,.11);color:var(--pri);border:1px solid rgba(14,165,233,.24);}
+.sv-LOW     {background:rgba(16,185,129,.1); color:var(--grn);border:1px solid rgba(16,185,129,.2);}
+.sv-INFO    {background:rgba(139,92,246,.11);color:var(--vio);border:1px solid rgba(139,92,246,.24);}
+.fi-body{flex:1;min-width:0;}
+.fi-rule{font-size:12px;font-weight:600;color:var(--t1);margin-bottom:3px;}
+.fi-det{font-size:11px;color:var(--t2);line-height:1.55;}
+.fi-ev{font-family:var(--mono);font-size:10px;background:var(--s3);border:1px solid var(--b1);border-radius:3px;padding:3px 7px;margin-top:5px;color:var(--tm);word-break:break-all;display:inline-block;max-width:100%;}
 
 /* META TABLE */
 .mt{width:100%;border-collapse:collapse;font-size:11px;}
 .mt tr{border-bottom:1px solid var(--b1);}
 .mt tr:last-child{border-bottom:none;}
-.mt td{padding:8px 10px;vertical-align:top;}
+.mt td{padding:8px 9px;vertical-align:top;}
 .mt .mk{color:var(--t3);width:38%;font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.5px;}
-.mt .mv{color:var(--t1);font-family:var(--mono);font-size:10px;}
-.mv.al{color:var(--amb);}
-.mv.dg{color:var(--red);}
-.mv.ok{color:var(--grn);}
+.mt .mv{color:var(--t1);font-family:var(--mono);font-size:10.5px;}
+.mt .mv.w{color:var(--amb);}.mt .mv.c{color:var(--red);}.mt .mv.ok{color:var(--grn);}
 
 /* CHIPS */
 .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;}
-.ch{font-size:9px;font-weight:700;font-family:var(--mono);letter-spacing:.5px;padding:3px 8px;border-radius:2px;text-transform:uppercase;}
-.ch-r{background:rgba(239,68,68,.12);color:#fca5a5;border:1px solid rgba(239,68,68,.25);}
-.ch-a{background:rgba(245,158,11,.12);color:#fcd34d;border:1px solid rgba(245,158,11,.25);}
+.ch{font-size:8.5px;font-weight:700;font-family:var(--mono);letter-spacing:.5px;padding:2px 8px;border-radius:3px;text-transform:uppercase;}
+.ch-r{background:rgba(239,68,68,.11);color:#fca5a5;border:1px solid rgba(239,68,68,.24);}
+.ch-a{background:rgba(245,158,11,.11);color:#fcd34d;border:1px solid rgba(245,158,11,.24);}
 .ch-b{background:rgba(14,165,233,.1);color:#7dd3fc;border:1px solid rgba(14,165,233,.2);}
 .ch-g{background:rgba(16,185,129,.1);color:#6ee7b7;border:1px solid rgba(16,185,129,.2);}
-.ch-v{background:rgba(139,92,246,.12);color:#c4b5fd;border:1px solid rgba(139,92,246,.25);}
-.ch-x{background:var(--s3);color:var(--t3);border:1px solid var(--b1);}
+.ch-v{background:rgba(139,92,246,.11);color:#c4b5fd;border:1px solid rgba(139,92,246,.24);}
 
 /* FILE DROP */
-.dz{border:1.5px dashed var(--b2);border-radius:var(--r8);padding:28px 18px;text-align:center;cursor:pointer;transition:all .2s;background:var(--s2);margin-bottom:12px;}
-.dz:hover,.dz.on{border-color:var(--pri);background:var(--pri-d);}
-.dz-ico{font-size:28px;margin-bottom:6px;opacity:.65;}
+.dz{border:1.5px dashed var(--b2);border-radius:var(--r8);padding:26px 17px;text-align:center;cursor:pointer;transition:all var(--tr);background:var(--s2);margin-bottom:11px;}
+.dz:hover,.dz.over{border-color:var(--pri);background:var(--pri-d);}
+.dz-ico{font-size:28px;margin-bottom:7px;opacity:.55;}
 .dz p{font-size:12px;color:var(--t2);line-height:1.6;}
 .dz strong{color:var(--pri);}
-.fp{display:none;padding:10px 12px;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r8);margin-bottom:10px;font-size:11px;font-family:var(--mono);color:var(--pri);}
+.fpill{display:none;padding:9px 12px;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r8);margin-bottom:10px;font-size:11px;font-family:var(--mono);color:var(--pri);}
 
-/* SCORE ROW */
-.srow{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:9px;margin-bottom:16px;}
-.scell{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r8);padding:13px 10px;text-align:center;}
-.snum{font-size:24px;font-weight:700;font-family:var(--mono);line-height:1;margin-bottom:3px;}
-.slbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;}
-
-/* DASH */
-.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-@media(max-width:620px){.dgrid{grid-template-columns:1fr;}}
-.brow2{margin-bottom:12px;}
-.bm{display:flex;justify-content:space-between;margin-bottom:4px;font-size:10px;}
-.bn{color:var(--t2);}
-.bp{color:var(--t1);font-family:var(--mono);}
-.bt{height:4px;background:var(--s3);border-radius:2px;overflow:hidden;}
-.btf{height:100%;border-radius:2px;transition:width .9s ease;}
-.loge{padding:9px 12px;border-radius:var(--r4);margin-bottom:4px;background:var(--s2);border:1px solid var(--b1);border-right:3px solid;display:flex;align-items:center;gap:8px;font-size:11px;}
-.loge.crit{border-right-color:var(--red);}
-.loge.warn{border-right-color:var(--amb);}
-.loge.safe{border-right-color:var(--grn);}
-.le-ico{font-size:13px;flex-shrink:0;}
+/* LOG */
+.le{padding:9px 12px;border-radius:var(--r8);margin-bottom:4px;background:var(--s2);border:1px solid var(--b1);border-right:3px solid;display:flex;align-items:center;gap:8px;font-size:11px;}
+.le.crit{border-right-color:var(--red);}
+.le.warn{border-right-color:var(--amb);}
+.le.safe{border-right-color:var(--grn);}
+.le-ico{font-size:12px;flex-shrink:0;}
 .le-txt{flex:1;color:var(--t1);}
 .le-ts{font-size:9px;font-family:var(--mono);color:var(--t3);}
 
+/* CHART */
+.donut-wrap{display:flex;justify-content:center;align-items:center;position:relative;min-height:180px;}
+.donut-center{position:absolute;text-align:center;}
+.donut-lbl{font-size:24px;font-weight:700;font-family:var(--mono);color:var(--t1);}
+.donut-sub{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:1.5px;}
+.legend{display:flex;flex-direction:column;gap:6px;margin-top:11px;}
+.legend-i{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--t2);}
+.legend-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+.legend-pct{margin-right:auto;font-family:var(--mono);font-size:10px;color:var(--t3);}
+.bar-chart{display:flex;align-items:flex-end;gap:6px;}
+.bar-col{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;}
+.bar-v{font-size:9px;font-family:var(--mono);color:var(--t3);min-height:12px;}
+.bar-w{flex:1;display:flex;align-items:flex-end;width:100%;}
+.bar-stack{width:100%;display:flex;flex-direction:column-reverse;}
+.bar-seg{width:100%;transition:height .85s cubic-bezier(.4,0,.2,1);}
+.bar-l{font-size:9px;color:var(--t4);font-family:var(--mono);}
+
+/* AUTH */
+.auth-g{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:15px;}
+.auth-c{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r8);padding:11px;text-align:center;}
+.auth-lbl{font-size:9px;font-family:var(--mono);color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.auth-val{font-size:13px;font-weight:700;font-family:var(--mono);}
+.auth-val.pass{color:var(--grn);}.auth-val.fail{color:var(--red);}.auth-val.none{color:var(--t4);}.auth-val.soft{color:var(--amb);}
+
+/* HOPS */
+.hop{display:flex;gap:11px;padding:9px 0;border-bottom:1px solid var(--b1);}
+.hop:last-child{border-bottom:none;}
+.hop-n{width:27px;height:27px;border-radius:50%;background:var(--s3);border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;font-size:10px;font-family:var(--mono);color:var(--pri);flex-shrink:0;}
+.hop-d{flex:1;}
+.hop-from{font-size:11px;font-weight:600;color:var(--t1);font-family:var(--mono);}
+.hop-by{font-size:10px;color:var(--t3);margin-top:1px;}
+.hop-ts{font-size:9px;font-family:var(--mono);color:var(--t4);margin-top:2px;}
+
+/* HASH */
+.hbox{background:var(--s3);border:1px solid var(--b1);border-radius:var(--r8);padding:9px 12px;font-family:var(--mono);font-size:11px;color:var(--tm);word-break:break-all;margin-bottom:8px;}
+.hlbl{font-size:9px;color:var(--t4);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;}
+
+/* CASES TABLE */
+.tbl-w{overflow-x:auto;}
+table.dtbl{width:100%;border-collapse:collapse;font-size:11.5px;}
+.dtbl th{padding:10px 12px;text-align:right;font-size:8.5px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1.5px;border-bottom:2px solid var(--b1);background:var(--s2);}
+.dtbl td{padding:10px 12px;border-bottom:1px solid var(--b1);color:var(--t2);vertical-align:middle;}
+.dtbl tr:last-child td{border-bottom:none;}
+.dtbl tr:hover td{background:rgba(14,165,233,.025);}
+
 /* REPORT */
-.rep{display:none;margin-top:12px;background:var(--s2);border:1px solid var(--ba);border-radius:var(--r12);padding:22px;}
-.rep.on{display:block;animation:fu .3s ease;}
-.rep-title{font-size:15px;font-weight:700;color:var(--pri);margin-bottom:3px;font-family:var(--mono);letter-spacing:.5px;}
-.rep-sub{font-size:10px;color:var(--t3);font-family:var(--mono);margin-bottom:18px;}
+.rep{display:none;margin-top:13px;background:var(--s2);border:1px solid var(--ba);border-radius:var(--r12);padding:21px;animation:fu .3s ease;}
+.rep.on{display:block;}
+.rep-title{font-size:14px;font-weight:700;color:var(--pri);margin-bottom:2px;font-family:var(--mono);letter-spacing:.5px;}
+.rep-sub{font-size:9.5px;color:var(--t3);font-family:var(--mono);margin-bottom:18px;}
 .rep-sec{margin-bottom:14px;}
-.rep-sec-ttl{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:2px;border-bottom:1px solid var(--b1);padding-bottom:5px;margin-bottom:8px;}
+.rep-sec-ttl{font-size:8.5px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:2px;border-bottom:1px solid var(--b1);padding-bottom:5px;margin-bottom:8px;}
 
-/* FOOTER */
-.ftr{border-top:1px solid var(--b1);padding:18px;margin-top:44px;text-align:center;}
-.ftr p{font-size:10px;color:var(--t3);font-family:var(--mono);letter-spacing:.4px;line-height:1.8;}
-.ftr strong{color:var(--pri);}
+/* ABOUT */
+.about-hero{background:linear-gradient(135deg,var(--s2),var(--s1));border:1px solid var(--b1);border-radius:var(--r16);padding:30px 26px;margin-bottom:18px;position:relative;overflow:hidden;}
+.about-hero::before{content:'';position:absolute;top:-50px;left:-50px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(14,165,233,.07),transparent 70%);pointer-events:none;}
+.about-tag{display:inline-flex;align-items:center;gap:5px;font-size:8.5px;font-family:var(--mono);color:var(--pri);letter-spacing:2px;text-transform:uppercase;margin-bottom:13px;padding:3px 10px;background:var(--pri-d);border:1px solid rgba(14,165,233,.18);border-radius:2px;}
+.about-hero h2{font-size:clamp(20px,3vw,30px);font-weight:700;color:var(--t1);line-height:1.2;margin-bottom:9px;}
+.about-hero h2 em{font-style:normal;color:var(--pri);}
+.about-hero p{font-size:12.5px;color:var(--t2);line-height:1.75;max-width:700px;}
+.std-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;}
+.sc{font-size:8.5px;font-family:var(--mono);padding:3px 9px;border-radius:3px;background:var(--s3);color:var(--t2);border:1px solid var(--b2);}
+.fl{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.fl li{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--t2);line-height:1.6;}
+.fl li::before{content:'▸';color:var(--pri);flex-shrink:0;margin-top:1px;}
+.rm-item{display:flex;gap:13px;padding:11px 0;border-bottom:1px solid var(--b1);}
+.rm-item:last-child{border-bottom:none;}
+.rm-ver{font-size:11px;font-family:var(--mono);color:var(--pri);font-weight:700;flex-shrink:0;width:50px;}
+.rm-info h4{font-size:12px;font-weight:600;color:var(--t1);margin-bottom:3px;}
+.rm-info p{font-size:11px;color:var(--t3);line-height:1.5;}
 
+/* HOME */
+.hero{padding:34px 0 26px;text-align:center;}
+.hero-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.18);color:#f87171;font-size:8.5px;font-family:var(--mono);letter-spacing:3px;padding:4px 13px;border-radius:2px;margin-bottom:17px;text-transform:uppercase;}
+.hero h1{font-size:clamp(22px,4vw,42px);font-weight:700;color:var(--t1);letter-spacing:-.5px;line-height:1.12;margin-bottom:9px;}
+.hero h1 em{font-style:normal;color:var(--pri);}
+.hero-desc{font-size:13px;color:var(--t2);max-width:560px;margin:0 auto 26px;line-height:1.75;}
+.hero-kpis{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;}
+.hkpi{display:flex;flex-direction:column;align-items:center;gap:2px;}
+.hkpi-v{font-size:21px;font-weight:700;font-family:var(--mono);color:var(--pri);}
+.hkpi-l{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:1.5px;}
+.div{height:1px;background:linear-gradient(90deg,transparent,var(--b2),transparent);margin:6px 0 22px;}
+.mod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:22px;}
+@media(max-width:720px){.mod-grid{grid-template-columns:1fr 1fr;}}
+.mc{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r12);padding:17px 15px;cursor:pointer;transition:all var(--tr);display:flex;flex-direction:column;gap:11px;position:relative;overflow:hidden;}
+.mc::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--mcol,var(--pri));transform:scaleX(0);transition:transform var(--tr);}
+.mc:hover{border-color:var(--ba);background:var(--s2);transform:translateY(-2px);}
+.mc:hover::after{transform:scaleX(1);}
+.mc-head{display:flex;align-items:center;gap:9px;}
+.mc-ico{width:34px;height:34px;border-radius:var(--r8);display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--s2);border:1px solid var(--b1);}
+.mc-id{font-size:8.5px;font-family:var(--mono);color:var(--t4);letter-spacing:1px;}
+.mc-name{font-size:12.5px;font-weight:700;color:var(--t1);}
+.mc-desc{font-size:11px;color:var(--t3);line-height:1.6;}
+.mc-stats{display:flex;gap:6px;flex-wrap:wrap;}
+.ms{font-size:8.5px;font-family:var(--mono);padding:2px 7px;border-radius:2px;background:var(--s3);color:var(--t3);border:1px solid var(--b1);}
+
+/* SCORE ROW */
+.srow{display:grid;grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:9px;margin-bottom:15px;}
+.scell{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r8);padding:12px 10px;text-align:center;}
+.snum{font-size:25px;font-weight:700;font-family:var(--mono);line-height:1;margin-bottom:3px;}
+.slbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;}
+
+/* MOD USAGE */
+.mu-row{margin-bottom:10px;}
+.mu-hd{display:flex;justify-content:space-between;margin-bottom:5px;font-size:10px;}
+.mu-n{color:var(--t2);}
+.mu-p{color:var(--t1);font-family:var(--mono);}
+.mu-t{height:4px;background:var(--s3);border-radius:2px;overflow:hidden;}
+.mu-f{height:100%;border-radius:2px;transition:width .9s ease;}
+
+/* OVERLAY */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:190;}
+.overlay.on{display:block;}
+
+/* SCROLLBAR */
 ::-webkit-scrollbar{width:5px;height:5px;}
 ::-webkit-scrollbar-track{background:var(--s1);}
 ::-webkit-scrollbar-thumb{background:var(--b2);border-radius:3px;}
 ::-webkit-scrollbar-thumb:hover{background:var(--ba);}
+
+/* MOBILE */
+@media(max-width:768px){
+  .sb{transform:translateX(100%);}
+  .sb.open{transform:translateX(0);}
+  .main{margin-right:0;}
+  .tb-burger{display:flex;}
+  .kpi-grid{grid-template-columns:1fr 1fr;}
+  .content{padding:14px 12px 30px;}
+}
 </style>
 </head>
 <body>
+<canvas id="bg"></canvas>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="overlay" id="overlay" onclick="closeSb()"></div>
 
-<header class="hdr">
-  <div class="hdr-in">
-    <a class="logo" href="#">
-      <div class="logo-mk">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          <polyline points="9 12 11 14 15 10"/>
-        </svg>
-      </div>
-      <div class="logo-t">
-        <span class="logo-title">DFAS</span>
-        <span class="logo-sub">Digital Forensics Analysis System</span>
-      </div>
-    </a>
-    <div class="hdr-right">
-      <span class="sid" id="sid">—</span>
-      <div class="pill"><div class="dot"></div>OPERATIONAL</div>
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sb" id="sb">
+  <div class="sb-logo" onclick="nav('home')">
+    <div class="sb-mark">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/>
+      </svg>
     </div>
+    <div class="sb-txt"><span class="sb-title">DFAS</span><span class="sb-sub">Digital Forensics v2</span></div>
   </div>
-</header>
+  <nav class="sb-nav">
+    <div class="sb-sec">التنقل</div>
+    <div class="ni active" data-p="home"      onclick="nav('home')"><div class="ni-ico">🏠</div>الرئيسية</div>
+    <div class="ni"        data-p="dashboard" onclick="nav('dashboard')"><div class="ni-ico">📊</div>لوحة التحكم<span class="ni-badge" id="nb-dash">0</span></div>
+    <div class="sb-sec">محركات التحليل</div>
+    <div class="ni" data-p="phishing" onclick="nav('phishing')"><div class="ni-ico">📨</div>كاشف التصيد<span class="ni-badge">MOD-01</span></div>
+    <div class="ni" data-p="url"      onclick="nav('url')"><div class="ni-ico">🔗</div>محلل الروابط<span class="ni-badge">MOD-02</span></div>
+    <div class="ni" data-p="image"    onclick="nav('image')"><div class="ni-ico">🖼️</div>جنائيات الصور<span class="ni-badge">MOD-03</span></div>
+    <div class="ni" data-p="email"    onclick="nav('email')"><div class="ni-ico">📧</div>ترويسات البريد<span class="ni-badge new">MOD-04</span></div>
+    <div class="ni" data-p="hash"     onclick="nav('hash')"><div class="ni-ico">#️⃣</div>البصمة الرقمية<span class="ni-badge new">MOD-05</span></div>
+    <div class="sb-sec">الإدارة</div>
+    <div class="ni" data-p="cases" onclick="nav('cases')"><div class="ni-ico">📁</div>إدارة القضايا</div>
+    <div class="ni" data-p="about" onclick="nav('about')"><div class="ni-ico">ℹ️</div>عن المشروع</div>
+  </nav>
+  <div class="sb-foot">
+    <div class="sb-status"><div class="sb-dot"></div><span class="sb-stxt">OPERATIONAL</span></div>
+    <div class="sb-clock" id="sb-clock">--:--:--</div>
+    <div class="sb-sid" id="sb-sid">SID: —</div>
+  </div>
+</aside>
 
-<main>
-<div class="wrap">
-
-  <div class="hero">
-    <div class="cls-banner">⚠ للاستخدام التعليمي والبحثي فقط ⚠</div>
-    <h1>منصة التحليل الجنائي<br><em>للجرائم الرقمية</em></h1>
-    <p class="hero-desc">نظام متكامل لكشف وتحليل جرائم الاحتيال الإلكتروني بمحركات تحليل سيبراني متعددة الطبقات وفق معايير NIST و ISO/IEC 27037</p>
-    <div class="hero-kpi">
-      <div class="kpi"><span class="kpi-v">47</span><span class="kpi-l">مؤشر تحليلي</span></div>
-      <div class="kpi"><span class="kpi-v">3</span><span class="kpi-l">محركات كشف</span></div>
-      <div class="kpi"><span class="kpi-v">ISO</span><span class="kpi-l">27037 معتمد</span></div>
-      <div class="kpi"><span class="kpi-v">TLP</span><span class="kpi-l">AMBER مصنف</span></div>
+<!-- ═══ MAIN ═══ -->
+<div class="main">
+  <header class="topbar">
+    <button class="tb-burger" onclick="openSb()">☰</button>
+    <div class="tb-bread">DFAS <span style="color:var(--t4)">/</span> <span class="cur" id="tb-title">الرئيسية</span></div>
+    <div class="tb-right">
+      <span class="tlp">TLP:AMBER</span>
+      <div class="ops"><div class="sb-dot"></div>OPERATIONAL</div>
     </div>
-  </div>
+  </header>
 
-  <div class="div"></div>
+  <div class="content">
 
-  <div class="mods">
-    <button class="mod on" onclick="sw('phishing',this)">
-      <div class="mod-ico">📨</div>
-      <div class="mod-lbl"><div>كاشف التصيد</div><div class="mod-code">MOD-01</div></div>
-    </button>
-    <button class="mod" onclick="sw('url',this)">
-      <div class="mod-ico">🔗</div>
-      <div class="mod-lbl"><div>محلل الروابط</div><div class="mod-code">MOD-02</div></div>
-    </button>
-    <button class="mod" onclick="sw('image',this)">
-      <div class="mod-ico">🖼</div>
-      <div class="mod-lbl"><div>جنائيات الصور</div><div class="mod-code">MOD-03</div></div>
-    </button>
-    <button class="mod" onclick="sw('dash',this)">
-      <div class="mod-ico">📊</div>
-      <div class="mod-lbl"><div>لوحة القيادة</div><div class="mod-code">CTRL</div></div>
-    </button>
-  </div>
-
-  <!-- MOD-01: PHISHING -->
-  <div id="p-phishing" class="panel on">
+  <!-- ══ PAGE: HOME ══ -->
+  <section class="page active" id="page-home">
+    <div class="hero">
+      <div class="hero-badge">⚠ للاستخدام التعليمي والبحثي فقط ⚠</div>
+      <h1>منصة التحليل الجنائي<br><em>للجرائم الرقمية</em></h1>
+      <p class="hero-desc">نظام متكامل لكشف وتحليل جرائم الاحتيال الإلكتروني بـ 5 محركات تحليل سيبراني، مدعوم بقاعدة بيانات IndexedDB محلية وتقارير ISO/IEC 27037</p>
+      <div class="hero-kpis">
+        <div class="hkpi"><span class="hkpi-v" id="hkpi-ind">47</span><span class="hkpi-l">مؤشر تحليلي</span></div>
+        <div class="hkpi"><span class="hkpi-v">5</span><span class="hkpi-l">محركات كشف</span></div>
+        <div class="hkpi"><span class="hkpi-v" id="hkpi-total">0</span><span class="hkpi-l">تحليل منجز</span></div>
+        <div class="hkpi"><span class="hkpi-v">ISO</span><span class="hkpi-l">27037 معتمد</span></div>
+      </div>
+    </div>
+    <div class="div"></div>
+    <div style="font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:2px;margin-bottom:13px;font-family:var(--mono);">محركات التحليل — الوصول السريع</div>
+    <div class="mod-grid">
+      <div class="mc" style="--mcol:#ef4444" onclick="nav('phishing')">
+        <div class="mc-head"><div class="mc-ico">📨</div><div><div class="mc-id">MOD-01</div><div class="mc-name">كاشف التصيد الاحتيالي</div></div></div>
+        <div class="mc-desc">تحليل رسائل البريد والنصوص المشبوهة بـ 47 مؤشر لغوي وسلوكي في 9 فئات كشف.</div>
+        <div class="mc-stats"><span class="ms">47 مؤشر</span><span class="ms">9 فئات</span></div>
+      </div>
+      <div class="mc" style="--mcol:#f59e0b" onclick="nav('url')">
+        <div class="mc-head"><div class="mc-ico">🔗</div><div><div class="mc-id">MOD-02</div><div class="mc-name">محلل الروابط الخبيثة</div></div></div>
+        <div class="mc-desc">فحص الروابط بـ 13 معيار أمني + Shannon Entropy لكشف نطاقات DGA.</div>
+        <div class="mc-stats"><span class="ms">13 معيار</span><span class="ms">Entropy</span></div>
+      </div>
+      <div class="mc" style="--mcol:#8b5cf6" onclick="nav('image')">
+        <div class="mc-head"><div class="mc-ico">🖼️</div><div><div class="mc-id">MOD-03</div><div class="mc-name">جنائيات الصور الرقمية</div></div></div>
+        <div class="mc-desc">تحليل EXIF/XMP والكشف عن التزوير بتقنية ELA وفحص 7 مؤشرات جنائية.</div>
+        <div class="mc-stats"><span class="ms">ELA</span><span class="ms">EXIF/XMP</span></div>
+      </div>
+      <div class="mc" style="--mcol:#10b981" onclick="nav('email')">
+        <div class="mc-head"><div class="mc-ico">📧</div><div><div class="mc-id">MOD-04</div><div class="mc-name">تحليل ترويسات البريد</div></div></div>
+        <div class="mc-desc">فحص SPF/DKIM/DMARC وتتبع مسار التوجيه وكشف انتحال الهوية.</div>
+        <div class="mc-stats"><span class="ms">SPF</span><span class="ms">DKIM</span><span class="ms">DMARC</span></div>
+      </div>
+      <div class="mc" style="--mcol:#22d3ee" onclick="nav('hash')">
+        <div class="mc-head"><div class="mc-ico">#️⃣</div><div><div class="mc-id">MOD-05</div><div class="mc-name">البصمة الرقمية</div></div></div>
+        <div class="mc-desc">احتساب SHA-256 / SHA-1 / MD5 للتحقق من سلامة الأدلة الرقمية.</div>
+        <div class="mc-stats"><span class="ms">SHA-256</span><span class="ms">MD5</span></div>
+      </div>
+      <div class="mc" style="--mcol:#f43f5e" onclick="nav('cases')">
+        <div class="mc-head"><div class="mc-ico">📁</div><div><div class="mc-id">CTRL</div><div class="mc-name">إدارة القضايا</div></div></div>
+        <div class="mc-desc">إنشاء وإدارة قضايا الجرائم الرقمية مع سلسلة حفظ الأدلة.</div>
+        <div class="mc-stats"><span class="ms">ISO 27037</span></div>
+      </div>
+    </div>
     <div class="card">
-      <div class="card-hd">
-        <div class="card-ttl"><div class="card-ico">📨</div>محرك تحليل رسائل التصيد — Phishing Analysis Engine</div>
-        <span class="card-meta">MOD-01 / v3.4</span>
+      <div class="card-hd"><div class="card-ttl"><div class="card-ico">🕒</div>آخر العمليات</div><span class="card-meta">LIVE</span></div>
+      <div class="card-bd" style="padding:12px 15px;">
+        <div id="home-log" style="font-size:11px;color:var(--t3);font-family:var(--mono);padding:8px;">لا توجد عمليات — ابدأ بتشغيل أحد محركات التحليل</div>
       </div>
+    </div>
+  </section>
+
+  <!-- ══ PAGE: DASHBOARD ══ -->
+  <section class="page" id="page-dashboard">
+    <div class="kpi-grid">
+      <div class="kpi-card" style="--kc:var(--pri)"><div class="kpi-ico">📊</div><div class="kpi-lbl">إجمالي التحليلات</div><div class="kpi-val" id="d-total">0</div></div>
+      <div class="kpi-card" style="--kc:var(--red)"><div class="kpi-ico">🚨</div><div class="kpi-lbl">تهديدات حرجة</div><div class="kpi-val" id="d-crit">0</div></div>
+      <div class="kpi-card" style="--kc:var(--amb)"><div class="kpi-ico">⚠️</div><div class="kpi-lbl">تهديدات متوسطة</div><div class="kpi-val" id="d-warn">0</div></div>
+      <div class="kpi-card" style="--kc:var(--grn)"><div class="kpi-ico">✅</div><div class="kpi-lbl">نتائج سليمة</div><div class="kpi-val" id="d-safe">0</div></div>
+    </div>
+    <div class="g65">
+      <div class="card">
+        <div class="card-hd"><div class="card-ttl"><div class="card-ico">📈</div>نشاط التحليل (7 أيام)</div><span class="card-meta">HISTORY</span></div>
+        <div class="card-bd">
+          <div id="chart-daily" style="height:130px;display:flex;align-items:flex-end;gap:6px;"></div>
+          <div class="legend" style="margin-top:10px;">
+            <div class="legend-i"><div class="legend-dot" style="background:var(--red)"></div>حرجة</div>
+            <div class="legend-i"><div class="legend-dot" style="background:var(--amb)"></div>متوسطة</div>
+            <div class="legend-i"><div class="legend-dot" style="background:var(--grn)"></div>سليمة</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><div class="card-ttl"><div class="card-ico">🎯</div>توزيع التهديدات</div><span class="card-meta">LIVE</span></div>
+        <div class="card-bd">
+          <div class="donut-wrap" id="chart-donut"></div>
+        </div>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-hd"><div class="card-ttl"><div class="card-ico">🔧</div>استخدام المحركات</div></div>
+        <div class="card-bd" id="mod-bars"><div style="font-size:11px;color:var(--t3);font-family:var(--mono);">لا توجد بيانات بعد</div></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><div class="card-ttl"><div class="card-ico">📋</div>سجل العمليات</div><span class="card-meta">REAL-TIME</span></div>
+        <div class="card-bd" style="padding:10px 13px;">
+          <div id="dash-log" style="max-height:220px;overflow-y:auto;"><div style="font-size:11px;color:var(--t3);padding:8px;font-family:var(--mono);">لا توجد عمليات بعد.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl"><div class="card-ico">📄</div>مولّد التقرير الجنائي</div><span class="card-meta">ISO/IEC 27037:2012</span></div>
+      <div class="card-bd">
+        <p style="font-size:12px;color:var(--t2);margin-bottom:13px;line-height:1.7;">يُنشئ تقريراً جنائياً رقمياً موثقاً وفق معيار ISO/IEC 27037 يتضمن جميع التحليلات وسلسلة الحفاظ على الأدلة.</p>
+        <div class="br">
+          <button class="btn btn-p" onclick="generateReport()">📄 إنشاء التقرير الرسمي</button>
+          <button class="btn btn-s" onclick="exportData()">💾 تصدير JSON</button>
+          <button class="btn btn-d btn-sm" onclick="clearAllData()">🗑 مسح البيانات</button>
+        </div>
+        <div class="rep" id="rep-out"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PAGE: PHISHING ══ -->
+  <section class="page" id="page-phishing">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl"><div class="card-ico">📨</div>محرك تحليل رسائل التصيد — Phishing Analysis Engine</div><span class="card-meta">MOD-01 / v3.5</span></div>
       <div class="card-bd">
         <label class="flbl">نص الرسالة المشبوهة</label>
-        <textarea id="ph-in" placeholder="الصق نص الرسالة أو البريد الإلكتروني المشبوه هنا للتحليل..."></textarea>
-        <div class="brow">
+        <textarea id="ph-in" placeholder="الصق نص الرسالة أو البريد الإلكتروني المشبوه هنا..."></textarea>
+        <div class="br">
           <button class="btn btn-p" onclick="runPH()">▶ تشغيل التحليل</button>
-          <button class="btn btn-g" onclick="exPH()">◈ نموذج اختبار</button>
-          <button class="btn btn-d" onclick="clr('phishing')">✕ مسح</button>
+          <button class="btn btn-s" onclick="$('ph-in').value=PhishingEngine.SAMPLE">◈ نموذج اختبار</button>
+          <button class="btn btn-d btn-sm" onclick="$('ph-in').value='';$('r-ph').innerHTML='';$('r-ph').classList.remove('on')">✕ مسح</button>
         </div>
         <div class="ldr" id="ld-ph"><span>يعمل المحرك...</span><div class="ldr-bar"><div class="ldr-fill"></div></div><span class="ldr-step" id="ls-ph">تهيئة...</span></div>
       </div>
     </div>
-    <div class="res" id="r-phishing"></div>
-  </div>
+    <div class="res" id="r-ph"></div>
+  </section>
 
-  <!-- MOD-02: URL -->
-  <div id="p-url" class="panel">
+  <!-- ══ PAGE: URL ══ -->
+  <section class="page" id="page-url">
     <div class="card">
-      <div class="card-hd">
-        <div class="card-ttl"><div class="card-ico">🔗</div>محرك تحليل الروابط الخبيثة — URL Analysis Engine</div>
-        <span class="card-meta">MOD-02 / v4.2</span>
-      </div>
+      <div class="card-hd"><div class="card-ttl"><div class="card-ico">🔗</div>محرك تحليل الروابط الخبيثة — URL Analysis Engine</div><span class="card-meta">MOD-02 / v4.3</span></div>
       <div class="card-bd">
         <label class="flbl">الرابط المشبوه</label>
         <input type="text" id="url-in" placeholder="أدخل الرابط للفحص — مثال: http://paypa1-secure-login.xyz/verify?token=...">
-        <div class="brow">
+        <div class="br">
           <button class="btn btn-p" onclick="runURL()">▶ فحص الرابط</button>
-          <button class="btn btn-g" onclick="exURL()">◈ رابط نموذجي</button>
-          <button class="btn btn-d" onclick="clr('url')">✕ مسح</button>
+          <button class="btn btn-s" onclick="$('url-in').value=UrlEngine.SAMPLE">◈ رابط نموذجي</button>
+          <button class="btn btn-d btn-sm" onclick="$('url-in').value=''">✕ مسح</button>
         </div>
-        <div class="ldr" id="ld-url"><span>فحص البنية والسمعة...</span><div class="ldr-bar"><div class="ldr-fill"></div></div><span class="ldr-step" id="ls-url">DNS Lookup...</span></div>
+        <div class="ldr" id="ld-url"><span>فحص البنية والسمعة...</span><div class="ldr-bar"><div class="ldr-fill"></div></div><span class="ldr-step" id="ls-url">DNS...</span></div>
       </div>
     </div>
     <div class="res" id="r-url"></div>
-  </div>
+  </section>
 
-  <!-- MOD-03: IMAGE -->
-  <div id="p-image" class="panel">
+  <!-- ══ PAGE: IMAGE ══ -->
+  <section class="page" id="page-image">
     <div class="card">
-      <div class="card-hd">
-        <div class="card-ttl"><div class="card-ico">🖼</div>محرك الجنائيات الرقمية للصور — Image Forensics Engine</div>
-        <span class="card-meta">MOD-03 / v2.9</span>
-      </div>
+      <div class="card-hd"><div class="card-ttl"><div class="card-ico">🖼️</div>محرك الجنائيات الرقمية للصور — Image Forensics Engine</div><span class="card-meta">MOD-03 / v3.1</span></div>
       <div class="card-bd">
-        <div class="dz" id="dz" onclick="document.getElementById('fi').click()" ondragover="dzo(event)" ondrop="dzd(event)" ondragleave="dzl()">
+        <div class="dz" id="img-dz" onclick="$('img-file').click()" ondragover="dzOver(event)" ondrop="dzDrop(event)" ondragleave="dzLeave()">
           <div class="dz-ico">📂</div>
           <p><strong>اضغط لرفع الملف</strong> أو اسحبه وأفلته هنا</p>
-          <p style="margin-top:4px;font-size:10px;color:var(--t3)">JPEG · PNG · PDF · TIFF — الحد الأقصى 15MB</p>
+          <p style="font-size:10px;color:var(--t4);margin-top:3px">JPEG · PNG · PDF · TIFF — الحد الأقصى 15MB</p>
         </div>
-        <input type="file" id="fi" style="display:none" accept="image/*,.pdf" onchange="hf(event)">
-        <div class="fp" id="fp"></div>
-        <div class="brow">
+        <input type="file" id="img-file" style="display:none" accept="image/*,.pdf" onchange="handleImgFile(event)">
+        <div class="fpill" id="img-pill"></div>
+        <div class="br">
           <button class="btn btn-p" onclick="runIMG()">▶ تشغيل التحليل الجنائي</button>
-          <button class="btn btn-g" onclick="exIMG()">◈ تحليل نموذجي</button>
+          <button class="btn btn-s" onclick="runIMGSample()">◈ تحليل نموذجي</button>
         </div>
         <div class="ldr" id="ld-img"><span>استخراج البيانات الوصفية...</span><div class="ldr-bar"><div class="ldr-fill"></div></div><span class="ldr-step" id="ls-img">EXIF Parser...</span></div>
       </div>
     </div>
-    <div class="res" id="r-image"></div>
-  </div>
+    <div class="res" id="r-img"></div>
+  </section>
 
-  <!-- DASHBOARD -->
-  <div id="p-dash" class="panel">
+  <!-- ══ PAGE: EMAIL ══ -->
+  <section class="page" id="page-email">
     <div class="card">
-      <div class="card-hd">
-        <div class="card-ttl"><div class="card-ico">📊</div>لوحة القيادة التحليلية — Command Dashboard</div>
-        <span class="card-meta">CTRL / LIVE</span>
-      </div>
+      <div class="card-hd"><div class="card-ttl"><div class="card-ico">📧</div>محرك تحليل ترويسات البريد — Email Header Analysis Engine</div><span class="card-meta">MOD-04 / v1.0 · NEW</span></div>
       <div class="card-bd">
-        <div class="srow">
-          <div class="scell"><div class="snum" id="d-tot" style="color:var(--pri)">0</div><div class="slbl">إجمالي التحليلات</div></div>
-          <div class="scell"><div class="snum" id="d-crit" style="color:var(--red)">0</div><div class="slbl">تهديدات حرجة</div></div>
-          <div class="scell"><div class="snum" id="d-warn" style="color:var(--amb)">0</div><div class="slbl">تهديدات متوسطة</div></div>
-          <div class="scell"><div class="snum" id="d-safe" style="color:var(--grn)">0</div><div class="slbl">نتائج سليمة</div></div>
+        <label class="flbl">ترويسات البريد الإلكتروني الكاملة</label>
+        <textarea id="em-in" style="min-height:160px" placeholder="الصق ترويسات البريد هنا...&#10;Received: from mail.server.com...&#10;Authentication-Results: spf=fail ..."></textarea>
+        <div class="br">
+          <button class="btn btn-p" onclick="runEM()">▶ تحليل الترويسات</button>
+          <button class="btn btn-s" onclick="$('em-in').value=EmailEngine.SAMPLE">◈ نموذج اختبار</button>
+          <button class="btn btn-d btn-sm" onclick="$('em-in').value=''">✕ مسح</button>
         </div>
-        <div class="dgrid">
+        <div class="ldr" id="ld-em"><span>تحليل سلسلة التوجيه...</span><div class="ldr-bar"><div class="ldr-fill"></div></div><span class="ldr-step" id="ls-em">SPF Check...</span></div>
+      </div>
+    </div>
+    <div class="res" id="r-em"></div>
+  </section>
+
+  <!-- ══ PAGE: HASH ══ -->
+  <section class="page" id="page-hash">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl"><div class="card-ico">#️⃣</div>محرك البصمة الرقمية — Digital Hash Engine</div><span class="card-meta">MOD-05 / v1.0 · NEW</span></div>
+      <div class="card-bd">
+        <div class="g2">
           <div>
-            <div style="font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;">توزيع التهديدات</div>
-            <div class="brow2"><div class="bm"><span class="bn">MOD-01 · تصيد احتيالي</span><span class="bp" id="b1p">0%</span></div><div class="bt"><div class="btf" id="b1" style="background:var(--red)"></div></div></div>
-            <div class="brow2"><div class="bm"><span class="bn">MOD-02 · روابط خبيثة</span><span class="bp" id="b2p">0%</span></div><div class="bt"><div class="btf" id="b2" style="background:var(--amb)"></div></div></div>
-            <div class="brow2"><div class="bm"><span class="bn">MOD-03 · جنائيات صور</span><span class="bp" id="b3p">0%</span></div><div class="bt"><div class="btf" id="b3" style="background:var(--vio)"></div></div></div>
+            <label class="flbl">نص للتحقق من بصمته</label>
+            <textarea id="hash-txt" style="min-height:100px" placeholder="أدخل النص لاحتساب بصمته الرقمية..."></textarea>
+            <div class="br"><button class="btn btn-p btn-sm" onclick="runHashTxt()">▶ احتساب الهاش</button></div>
           </div>
           <div>
-            <div style="font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;">سجل العمليات</div>
-            <div id="oplog" style="font-size:11px;color:var(--t3)">لا توجد عمليات بعد.</div>
+            <label class="flbl">ملف للتحقق من بصمته</label>
+            <div class="dz" style="padding:18px" onclick="$('hash-file').click()">
+              <div class="dz-ico" style="font-size:22px">📄</div>
+              <p style="font-size:11px">اضغط لرفع ملف</p>
+            </div>
+            <input type="file" id="hash-file" style="display:none" onchange="runHashFile(event)">
           </div>
+        </div>
+        <div class="ldr" id="ld-hash"><span>احتساب البصمة الرقمية...</span><div class="ldr-bar"><div class="ldr-fill"></div></div></div>
+      </div>
+    </div>
+    <div class="res" id="r-hash"></div>
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl"><div class="card-ico">⚖️</div>مقارنة البصمات الرقمية</div></div>
+      <div class="card-bd">
+        <div class="g2">
+          <div><label class="flbl">البصمة الأولى</label><input type="text" id="hc1" placeholder="الصق البصمة الأولى..."></div>
+          <div><label class="flbl">البصمة الثانية</label><input type="text" id="hc2" placeholder="الصق البصمة الثانية..."></div>
+        </div>
+        <div class="br"><button class="btn btn-s btn-sm" onclick="cmpHash()">مقارنة</button></div>
+        <div id="hc-res" style="margin-top:12px;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PAGE: CASES ══ -->
+  <section class="page" id="page-cases">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl"><div class="card-ico">📁</div>إدارة القضايا الجنائية الرقمية</div><button class="btn btn-p btn-sm" onclick="toggleCaseForm()">+ قضية جديدة</button></div>
+      <div id="case-form" style="display:none;padding:16px 17px;border-bottom:1px solid var(--b1);">
+        <div class="g2">
+          <div><label class="flbl">عنوان القضية</label><input type="text" id="c-title" placeholder="مثال: قضية احتيال رقمي — شركة X"></div>
+          <div><label class="flbl">نوع الجريمة</label><input type="text" id="c-type" placeholder="مثال: تصيد احتيالي / احتيال مالي"></div>
+        </div>
+        <div style="margin-top:10px"><label class="flbl">ملاحظات</label><textarea id="c-notes" style="min-height:70px" placeholder="ملاحظات عن القضية..."></textarea></div>
+        <div class="br"><button class="btn btn-p btn-sm" onclick="createCase()">حفظ</button><button class="btn btn-s btn-sm" onclick="toggleCaseForm()">إلغاء</button></div>
+      </div>
+      <div class="tbl-w"><table class="dtbl"><thead><tr><th>رقم القضية</th><th>العنوان</th><th>النوع</th><th>الحالة</th><th>التاريخ</th><th>إجراء</th></tr></thead><tbody id="cases-tbody"><tr><td colspan="6" style="text-align:center;color:var(--t4);padding:22px;font-family:var(--mono);font-size:11px;">لا توجد قضايا بعد</td></tr></tbody></table></div>
+    </div>
+  </section>
+
+  <!-- ══ PAGE: ABOUT ══ -->
+  <section class="page" id="page-about">
+    <div class="about-hero">
+      <div class="about-tag">🔬 فكرة المشروع</div>
+      <h2>نظام التحليل الجنائي لـ <em>الجرائم الرقمية</em></h2>
+      <p>DFAS هو منصة تحليل جنائي رقمي متكاملة تعمل بالكامل بدون إنترنت (Offline-First)، مُصمَّمة لكشف وتحليل الجرائم الإلكترونية في البيئة العربية. تجمع 5 محركات تحليل سيبراني في واجهة عربية كاملة مع قاعدة بيانات IndexedDB محلية وتقارير جنائية موثقة وفق المعايير الدولية.</p>
+      <div class="std-chips">
+        <span class="sc">ISO/IEC 27037:2012</span><span class="sc">NIST SP 800-86</span><span class="sc">RFC 3227</span>
+        <span class="sc">ACPO Guidelines v5</span><span class="sc">TLP:AMBER</span><span class="sc">IndexedDB</span><span class="sc">Offline-First</span>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-hd"><div class="card-ttl"><div class="card-ico">❓</div>المشكلة والحل</div></div>
+        <div class="card-bd">
+          <p style="font-size:12px;color:var(--t2);margin-bottom:11px;line-height:1.75;">تفتقر البيئة العربية إلى أدوات تحليل جنائي رقمي باللغة العربية. DFAS يسد هذه الفجوة بـ:</p>
+          <ul class="fl">
+            <li>تحليل الرسائل والروابط والصور والبريد عربياً</li>
+            <li>كشف 47+ مؤشر للاحتيال والتصيد باللغة العربية</li>
+            <li>تقارير جنائية موثقة وفق ISO/IEC 27037</li>
+            <li>عمل كامل offline لحماية الأدلة الحساسة</li>
+            <li>قاعدة بيانات IndexedDB لحفظ سجل القضايا</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><div class="card-ttl"><div class="card-ico">⚙️</div>المكونات التقنية</div></div>
+        <div class="card-bd">
+          <table class="mt">
+            <tr><td class="mk">Frontend</td><td class="mv">HTML5 / CSS3 / JS ES2022</td></tr>
+            <tr><td class="mk">Database</td><td class="mv">IndexedDB (Persistent)</td></tr>
+            <tr><td class="mk">Crypto</td><td class="mv">Web Crypto API SHA-256/SHA-1</td></tr>
+            <tr><td class="mk">Charts</td><td class="mv">SVG + Canvas (Zero libs)</td></tr>
+            <tr><td class="mk">Algorithms</td><td class="mv">Shannon Entropy / ELA</td></tr>
+            <tr><td class="mk">Standards</td><td class="mv">ISO 27037 / NIST 800-86</td></tr>
+            <tr><td class="mk">Privacy</td><td class="mv ok">Zero external requests</td></tr>
+          </table>
         </div>
       </div>
     </div>
     <div class="card">
-      <div class="card-hd">
-        <div class="card-ttl"><div class="card-ico">📄</div>مولّد التقرير الجنائي الرقمي</div>
-        <span class="card-meta">Chain of Custody</span>
-      </div>
+      <div class="card-hd"><div class="card-ttl"><div class="card-ico">🔬</div>المحركات التقنية — تفصيل كامل</div></div>
       <div class="card-bd">
-        <p style="font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.6;">يُنشئ تقريراً جنائياً رقمياً موثقاً وفق معيار ISO/IEC 27037 يتضمن جميع التحليلات وسلسلة الحفاظ على الأدلة.</p>
-        <button class="btn btn-p" onclick="genRep()">📄 إنشاء التقرير الرسمي</button>
-        <div class="rep" id="rep-out"></div>
+        <div class="g2">
+          <div>
+            <div style="font-size:10.5px;font-weight:700;color:var(--red);margin-bottom:8px;font-family:var(--mono);">MOD-01 — Phishing Detection Engine</div>
+            <ul class="fl"><li>9 فئات: استعجال، انتحال، طلب بيانات، إغراء مالي، تهديد...</li><li>47 مؤشر لغوي وسلوكي للنصوص العربية والمختلطة</li><li>كشف الروابط المضمّنة والخلط اللغوي المشبوه</li></ul>
+            <div style="font-size:10.5px;font-weight:700;color:var(--amb);margin:13px 0 8px;font-family:var(--mono);">MOD-02 — URL Analysis Engine</div>
+            <ul class="fl"><li>13 معيار: TLD، IP مباشر، Typosquatting، Phishing Paths...</li><li>Shannon Entropy لكشف نطاقات DGA</li><li>Open Redirect + Percent-Encoding Detection</li></ul>
+          </div>
+          <div>
+            <div style="font-size:10.5px;font-weight:700;color:var(--vio);margin-bottom:8px;font-family:var(--mono);">MOD-03 — Image Forensics Engine</div>
+            <ul class="fl"><li>EXIF/XMP Metadata Extraction الكاملة</li><li>Error Level Analysis (ELA) لكشف التزوير</li><li>Photoshop Signature + Timestamp Conflict Detection</li></ul>
+            <div style="font-size:10.5px;font-weight:700;color:var(--grn);margin:13px 0 8px;font-family:var(--mono);">MOD-04 — Email Header Analysis</div>
+            <ul class="fl"><li>SPF / DKIM / DMARC Authentication Check</li><li>Routing Chain Visualization</li><li>From ↔ Return-Path ↔ Reply-To Mismatch Detection</li></ul>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-
-</div>
-</main>
-
-<footer class="ftr">
-  <p><strong>DFAS</strong> — Digital Forensics Analysis System · مشروع تخرج دبلوم الأمن السيبراني<br>
-  ⚖ جميع التحليلات محلية معزولة · لا ترسل بيانات خارجياً · للأغراض التعليمية فقط<br>
-  NIST SP 800-86 · ISO/IEC 27037:2012 · RFC 3227 · ACPO Digital Evidence Guidelines</p>
-</footer>
-
-<script>
-'use strict';
-// Session ID
-(()=>{
-  const id='SID-'+Date.now().toString(36).toUpperCase()+'-'+Math.random().toString(36).slice(2,6).toUpperCase();
-  document.getElementById('sid').textContent='SESSION: '+id;
-})();
-
-const S={ops:[],c:{ph:0,url:0,img:0},t:{crit:0,warn:0,safe:0}};
-const $=id=>document.getElementById(id);
-const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-
-function sw(name,btn){
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
-  document.querySelectorAll('.mod').forEach(b=>b.classList.remove('on'));
-  $('p-'+name).classList.add('on');
-  btn.classList.add('on');
-  if(name==='dash') rdash();
-}
-
-function showLdr(id,on,steps){
-  const el=$('ld-'+id);
-  if(!el)return;
-  el.classList.toggle('on',on);
-  if(on&&steps){
-    let i=0;
-    const se=el.querySelector('.ldr-step');
-    const t=setInterval(()=>{
-      if(i>=steps.length||!el.classList.contains('on')){clearInterval(t);return;}
-      if(se)se.textContent=steps[i++];
-    },500);
-  }
-}
-
-function showRes(id,html){
-  const el=$('r-'+id);
-  el.innerHTML=html;el.classList.add('on');
-}
-
-function gBar(id,pct,cls){
-  setTimeout(()=>{const e=$(id);if(e){e.style.width=pct+'%';e.className='gauge-fill '+cls;}},120);
-}
-
-function clr(id){
-  const map={phishing:['ph-in'],url:['url-in']};
-  (map[id]||[]).forEach(k=>{const e=$(k);if(e)e.value='';});
-  const r=$('r-'+id);if(r){r.innerHTML='';r.classList.remove('on');}
-}
-
-function log(mod,label,lvl){
-  S.ops.unshift({mod,label,lvl,ts:new Date().toLocaleTimeString('ar')});
-  S.c[mod]++;
-  if(lvl==='crit')S.t.crit++;else if(lvl==='warn')S.t.warn++;else S.t.safe++;
-}
-
-function sev(s){
-  const m={CRITICAL:'sc',HIGH:'sh',MEDIUM:'sm',LOW:'sl',INFO:'si'};
-  return `<span class="sev ${m[s]||'si'}">${s}</span>`;
-}
-
-function fi(s,rule,det,ev=''){
-  return `<div class="fi"><div class="fi-sev">${sev(s)}</div><div class="fi-c"><div class="fi-rule">${esc(rule)}</div><div class="fi-det">${esc(det)}</div>${ev?`<span class="fi-ev">${esc(ev)}</span>`:''}</div></div>`;
-}
-
-function gauge(lbl,pct,cls,id){
-  return `<div class="gauge"><div class="gauge-hd"><span class="gauge-lbl">${lbl}</span><span class="gauge-val">${pct}/100</span></div><div class="gauge-track"><div class="gauge-fill ${cls}" id="${id}"></div></div></div>`;
-}
-
-/* ═══ MOD-01: PHISHING ═══ */
-const PHR={
-  urgency:     {w:['عاجل','فوري','خلال 24 ساعة','خلال 48 ساعة','الآن فوراً','ينتهي اليوم','آخر فرصة','لا تتأخر','قبل فوات الأوان'],sc:3,sev:'HIGH',   lbl:'لغة الاستعجال والضغط النفسي (Urgency Manipulation)'},
-  impersonate: {w:['بنك','مصرف','وزارة','حكومة','أمازون','باي بال','paypal','amazon','apple','microsoft','google','stc','زين','موبايلي'],sc:4,sev:'CRITICAL',lbl:'انتحال هوية مؤسسة موثوقة (Brand Impersonation)'},
-  credential:  {w:['كلمة المرور','رقم البطاقة','الرقم السري','CVV','PIN','بيانات الدخول','اسم المستخدم','معلوماتك','حدّث بياناتك','تحقق من هويتك'],sc:5,sev:'CRITICAL',lbl:'استهداف بيانات الاعتماد (Credential Harvesting)'},
-  financial:   {w:['جائزة','مكافأة','ربح','مبلغ','تحويل','ريال','دولار','يورو','10000','مليون','استثمار مضمون'],sc:3,sev:'HIGH',lbl:'إغراء مالي (Financial Lure)'},
-  threat:      {w:['إغلاق','تعليق','تجميد','حذف','إجراء قانوني','ملاحقة','سنضطر','ستخسر','عقوبة','غرامة','توقيف'],sc:4,sev:'CRITICAL',lbl:'التهديد والإكراه (Threat & Coercion)'},
-  cta:         {w:['انقر هنا','اضغط الرابط','سجّل الدخول','تسجيل الدخول','أدخل','زيارة الموقع','تفعيل','تأكيد'],sc:2,sev:'MEDIUM',lbl:'طلب إجراء عاجل (Malicious CTA)'},
-  social:      {w:['تهانينا','اخترناك','أنت الفائز','عرض حصري','مجاني','بدون رسوم','فرصة ذهبية','محدود الوقت'],sc:3,sev:'HIGH',lbl:'هندسة اجتماعية (Social Engineering)'},
-};
-
-async function runPH(){
-  const text=$('ph-in').value.trim();
-  if(!text){alert('الرجاء إدخال نص الرسالة');return;}
-  const steps=['تهيئة المحرك...','فحص الكلمات المفتاحية...','تحليل البنية اللغوية...','تطبيق نماذج الكشف...','احتساب درجة المخاطر...','إنشاء التقرير...'];
-  showLdr('ph',true,steps);
-  await sleep(2800);
-  showLdr('ph',false);
-
-  const findings=[];let score=0;
-  for(const [,rule] of Object.entries(PHR)){
-    const hits=rule.w.filter(w=>text.includes(w));
-    if(hits.length){
-      score+=rule.sc*hits.length;
-      findings.push({s:rule.sev,r:rule.lbl,d:`${hits.length} مؤشر مكتشف — الكلمات: ${hits.slice(0,3).join('، ')}${hits.length>3?'…':''}`,ev:hits.join(' | ')});
-    }
-  }
-  const urls=text.match(/https?:\/\/[^\s]+/g)||[];
-  if(urls.length){score+=4;findings.push({s:'HIGH',r:'روابط مشبوهة مضمّنة (Embedded URLs)',d:`${urls.length} رابط مكتشف في نص الرسالة`,ev:urls.slice(0,2).join(' | ')});}
-  const exclm=(text.match(/!|‼/g)||[]).length;
-  if(exclm>=2){score+=2;findings.push({s:'MEDIUM',r:'استخدام مفرط لعلامات التعجب',d:`${exclm} علامة — مؤشر ضغط نفسي`,ev:''});}
-  const wc=text.split(/\s+/).length;
-  const sc2=(text.match(/[A-Za-z@\.]{5,}/g)||[]).length;
-  if(sc2>2){score+=1;findings.push({s:'LOW',r:'خلط لغوي مشبوه (اللاتينية داخل رسالة عربية)',d:`${sc2} توكن أجنبي`,ev:''});}
-
-  const pct=Math.min(Math.round((score/38)*100),99);
-  const lvl=pct>=65?'crit':pct>=35?'warn':'safe';
-  const gfc=lvl==='crit'?'gf-crit':lvl==='warn'?'gf-warn':'gf-safe';
-  const vmap={
-    crit:{cls:'crit',ico:'🚨',t:'تهديد حرج — رسالة تصيد احتيالي موثوقة',d:`رُصد ${findings.length} مؤشر خطر. تُصنَّف ضمن حملات التصيد النشطة.`},
-    warn:{cls:'warn',ico:'⚠️',t:'مشبوه — يُرجَّح أنها رسالة تصيد',d:`رُصد ${findings.length} مؤشر. تحقق من المصدر قبل أي إجراء.`},
-    safe:{cls:'safe',ico:'✓', t:'احتمالية منخفضة — النص يبدو مشروعاً',d:`رُصد ${findings.length} مؤشر منخفض الخطورة.`}
-  };const v=vmap[lvl];
-  log('ph',`تحليل رسالة — ${pct}%`,lvl);
-
-  showRes('phishing',`
-    <div class="card"><div class="card-hd"><div class="card-ttl"><div class="card-ico">📊</div>نتائج التحليل الجنائي</div><span class="card-meta">${new Date().toLocaleString('ar')}</span></div>
-    <div class="card-bd">
-      <div class="vrd ${v.cls}"><div class="vrd-ico">${v.ico}</div><div class="vrd-main"><div class="vrd-title">${v.t}</div><div class="vrd-desc">${v.d}</div></div><div class="vrd-sc">${pct}%</div></div>
-      ${gauge('درجة الخطورة الإجمالية',pct,gfc,'gf-p1')}
-      ${gauge('ثقة الكشف (Confidence)',Math.min(findings.length*15,97),'gf-crit','gf-p2')}
-      <div class="findings-hd">المؤشرات المكتشفة (${findings.length})</div>
-      ${findings.length?findings.map(f=>fi(f.s,f.r,f.d,f.ev)).join(''):fi('INFO','لم تُكتشف مؤشرات خطر','النص يبدو مشروعاً','')}
-      <div style="background:var(--s2);border:1px solid var(--b1);border-radius:var(--r8);padding:13px;margin-top:6px;">
-        <div style="font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:2px;margin-bottom:9px;">تحليل لغوي إضافي</div>
-        <table class="mt">
-          <tr><td class="mk">عدد الكلمات</td><td class="mv">${wc}</td></tr>
-          <tr><td class="mk">علامات التعجب</td><td class="mv ${exclm>=2?'al':''}">${exclm}</td></tr>
-          <tr><td class="mk">روابط مضمّنة</td><td class="mv ${urls.length?'al':''}">${urls.length}</td></tr>
-          <tr><td class="mk">طول النص</td><td class="mv">${text.length} حرف</td></tr>
-          <tr><td class="mk">توكن أجنبي</td><td class="mv">${sc2}</td></tr>
-        </table>
+    <div class="g2">
+      <div class="card">
+        <div class="card-hd"><div class="card-ttl"><div class="card-ico">🗺️</div>خارطة التطوير</div></div>
+        <div class="card-bd">
+          <div class="rm-item"><div class="rm-ver">v2.0 ✅</div><div class="rm-info"><h4>الإصدار الحالي</h4><p>5 محركات + IndexedDB + لوحة تحكم + قضايا + تقارير ISO</p></div></div>
+          <div class="rm-item"><div class="rm-ver" style="color:var(--t3)">v3.0 🔄</div><div class="rm-info"><h4>قريباً</h4><p>AraBERT NLP · قوائم سوداء محلية · WHOIS · Clone Detection</p></div></div>
+          <div class="rm-item"><div class="rm-ver" style="color:var(--t4)">v4.0 🔮</div><div class="rm-info"><h4>مستقبلي</h4><p>SIEM Integration (STIX/TAXII) · AI · Government Cloud</p></div></div>
+        </div>
       </div>
-      <div class="chips">
-        ${findings.map(f=>{const m={CRITICAL:'ch-r',HIGH:'ch-a',MEDIUM:'ch-b',LOW:'ch-g',INFO:'ch-v'};return`<span class="ch ${m[f.s]||'ch-x'}">${f.s}</span>`;}).filter((v,i,a)=>a.indexOf(v)===i).join('')}
+      <div class="card">
+        <div class="card-hd"><div class="card-ttl"><div class="card-ico">📐</div>المعايير المعتمدة</div></div>
+        <div class="card-bd">
+          <table class="mt">
+            <tr><td class="mk">ISO/IEC 27037</td><td class="mv ok">توثيق الأدلة الرقمية</td></tr>
+            <tr><td class="mk">NIST SP 800-86</td><td class="mv ok">منهجية التحقيق الجنائي</td></tr>
+            <tr><td class="mk">RFC 3227</td><td class="mv ok">جمع وأرشفة الأدلة</td></tr>
+            <tr><td class="mk">ACPO v5</td><td class="mv ok">إرشادات الأدلة الرقمية</td></tr>
+          </table>
+          <div style="margin-top:14px;padding:11px;background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.14);border-radius:var(--r8);">
+            <div style="font-size:9.5px;font-weight:700;color:var(--red);margin-bottom:4px;">⚠ إخلاء مسؤولية</div>
+            <div style="font-size:11px;color:var(--t3);line-height:1.65;">للأغراض التعليمية والبحثية فقط. جميع التحليلات محلية معزولة. لا ترسل بيانات خارجياً.</div>
+          </div>
+        </div>
       </div>
-    </div></div>`);
-  gBar('gf-p1',pct,gfc);
-  gBar('gf-p2',Math.min(findings.length*15,97),'gf-crit');
-}
+    </div>
+  </section>
 
-function exPH(){
-  $('ph-in').value=`عزيزي العميل الكريم،
+  </div><!-- /content -->
+</div><!-- /main -->
 
-نُحيطكم علماً بأنه تم تعليق حسابك البنكي فوراً نظراً لنشاط غير مصرح به. لتفادي إغلاق الحساب نهائياً وفتح إجراء قانوني ضدك، يجب تحديث بيانات الدخول وكلمة المرور خلال 24 ساعة.
-
-تهانينا! تم اختيارك للحصول على مكافأة 5,000 ريال — اضغط الرابط الآن قبل فوات الأوان:
-http://bank-rajhi-secure-verify.xyz/login?token=A7F3X&session=confirm
-
-فريق الدعم — بنك الراجحي`;
-}
-
-/* ═══ MOD-02: URL ═══ */
-const URLC=[
-  {sev:'CRITICAL',rule:'امتداد نطاق خبيث معروف (Malicious TLD)',         test:u=>/\.(xyz|tk|ml|ga|cf|gq|ru|cn|pw|top|click|download|zip|cc|biz\.id)($|\/)/.test(u),         det:'الامتداد مدرج في SURBL/URIBL/DNSBL'},
-  {sev:'CRITICAL',rule:'استخدام عنوان IP مباشر (Direct IP Access)',       test:u=>/https?:\/\/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/.test(u),                                 det:'مؤشر على C2 أو استضافة خبيثة مؤقتة'},
-  {sev:'CRITICAL',rule:'تقليد علامة تجارية (Typosquatting / Homograph)', test:u=>/paypa[^l]|arnazon|g00gle|micros0ft|fac3book|app1e|inst4gram/i.test(u),                  det:'تهجئة مزيفة لموقع موثوق لخداع المستخدم'},
-  {sev:'HIGH',    rule:'بروتوكول HTTP غير مشفر (Missing TLS)',            test:u=>/^http:\/\//i.test(u),                                                                    det:'غياب TLS يُمكّن هجمات MITM واختطاف الجلسة'},
-  {sev:'HIGH',    rule:'رابط طويل مشبوه (URL Obfuscation)',               test:u=>u.length>75,                                                                              det:`الطول ${0} حرف — يُخفي الوجهة ويتجاوز الفلاتر`},
-  {sev:'HIGH',    rule:'شرطات مفرطة في النطاق (Excessive Hyphens)',       test:u=>(u.match(/-/g)||[]).length>=4,                                                            det:'نمط شائع لإضافة كلمات مصداقية مزيفة'},
-  {sev:'HIGH',    rule:'مسار وجهة خبيث (Phishing Path Pattern)',          test:u=>/\/(verify|login|update|secure|account|banking|password|confirm|reset|auth|token|session)/i.test(u), det:'مسارات نمطية في صفحات التصيد'},
-  {sev:'MEDIUM',  rule:'نطاقات فرعية مفرطة (Subdomain Proliferation)',    test:u=>(u.match(/\./g)||[]).length>=4,                                                           det:'قد يُخفي نطاق الجذر الحقيقي'},
-  {sev:'MEDIUM',  rule:'خدمة تقصير روابط (URL Shortener)',                test:u=>/bit\.ly|goo\.gl|tinyurl|ow\.ly|t\.co|is\.gd|buff\.ly/i.test(u),                         det:'يُخفي الوجهة ويتجاوز فلاتر الأمان'},
-  {sev:'MEDIUM',  rule:'Percent-Encoding مفرط',                           test:u=>(u.match(/%[0-9a-f]{2}/gi)||[]).length>=3,                                               det:'قد يُستخدم لتجاوز أنظمة الكشف'},
-  {sev:'MEDIUM',  rule:'منفذ غير قياسي (Non-Standard Port)',              test:u=>/:\d{4,5}\//.test(u)&&!/:(80|443|8080|8443)\//.test(u),                                  det:'المنافذ غير القياسية مؤشر على خوادم خبيثة'},
-  {sev:'MEDIUM',  rule:'Open Redirect محتمل',                             test:u=>/[?&](url|redirect|next|return|goto|target)=/i.test(u),                                  det:'قد يُعيد التوجيه إلى موقع خبيث'},
-  {sev:'LOW',     rule:'معاملات URL حساسة',                               test:u=>/[?&](token|key|pass|pwd|auth|id|sid|session)=/i.test(u),                               det:'بيانات حساسة مرئية في URL'},
-];
-
-function entropy(s){
-  if(!s||!s.length)return 0;
-  const f={};for(const c of s)f[c]=(f[c]||0)+1;
-  const n=s.length;
-  return -Object.values(f).reduce((a,v)=>{const p=v/n;return a+p*Math.log2(p);},0);
-}
-
-async function runURL(){
-  const url=$('url-in').value.trim();
-  if(!url){alert('الرجاء إدخال رابط');return;}
-  const steps=['DNS Lookup...','TLD Reputation Check...','Brand Similarity Analysis...','Path Heuristics...','Shannon Entropy...','Open Redirect Check...','Report Generation...'];
-  showLdr('url',true,steps);
-  await sleep(2700);
-  showLdr('url',false);
-
-  URLC[4].det=`الطول: ${url.length} حرف — يُستخدم لإخفاء الوجهة الحقيقية`;
-  const hit=[];let sc=0;
-  URLC.forEach(c=>{
-    if(c.test(url)){
-      hit.push(c);
-      sc+={CRITICAL:5,HIGH:3,MEDIUM:2,LOW:1}[c.sev]||1;
-    }
-  });
-
-  const dm=(url.match(/\/\/([^\/\?:#]+)/)||['',''])[1];
-  const ent=entropy(dm);
-  if(ent>3.8){sc+=2;hit.push({sev:'MEDIUM',rule:`نطاق عالي الإنتروبيا — DGA محتمل (${ent.toFixed(2)} bits)`,det:'النطاقات المُولَّدة خوارزمياً لها إنتروبيا عالية',ev:dm});}
-
-  const pct=Math.min(Math.round((sc/46)*100),99);
-  const lvl=pct>=65?'crit':pct>=35?'warn':'safe';
-  const gfc=lvl==='crit'?'gf-crit':lvl==='warn'?'gf-warn':'gf-safe';
-  const vmap={
-    crit:{cls:'crit',ico:'🚨',t:'رابط خطير — لا تفتحه',d:`رُصد ${hit.length} مؤشر خطر. يُرجَّح أنه يقود إلى تصيد أو برمجية خبيثة.`},
-    warn:{cls:'warn',ico:'⚠️',t:'رابط مشبوه — توخَّ الحذر',d:`رُصد ${hit.length} مؤشر متوسط. تحقق من المصدر.`},
-    safe:{cls:'safe',ico:'✓', t:'الرابط يبدو آمناً',d:'لم تُرصد مؤشرات خطر بارزة.'}
-  };const v=vmap[lvl];
-  log('url',esc(url.slice(0,42))+'…',lvl);
-
-  let parsed={protocol:'—',host:'—',path:'—',query:'—'};
-  try{const u=new URL(url.startsWith('http')?url:'https://'+url);parsed={protocol:u.protocol,host:u.host,path:u.pathname,query:u.search||'—'};}catch(e){}
-
-  showRes('url',`
-    <div class="card"><div class="card-hd"><div class="card-ttl"><div class="card-ico">📊</div>نتائج فحص الرابط</div><span class="card-meta">${new Date().toLocaleString('ar')}</span></div>
-    <div class="card-bd">
-      <div class="vrd ${v.cls}"><div class="vrd-ico">${v.ico}</div><div class="vrd-main"><div class="vrd-title">${v.t}</div><div class="vrd-desc">${v.d}</div></div><div class="vrd-sc">${pct}%</div></div>
-      <div style="background:var(--s3);border:1px solid var(--b1);border-radius:var(--r8);padding:10px 12px;margin-bottom:14px;font-family:var(--mono);font-size:10px;color:var(--tm);word-break:break-all;">${esc(url)}</div>
-      ${gauge('درجة خطورة الرابط',pct,gfc,'gf-u1')}
-      ${gauge(`إنتروبيا النطاق (${ent.toFixed(2)} bits)`,Math.min(Math.round(ent*18),100),ent>3.8?'gf-crit':'gf-safe','gf-u2')}
-      <div class="findings-hd">المؤشرات المكتشفة (${hit.length} / ${URLC.length+1})</div>
-      ${hit.length?hit.map(h=>fi(h.sev,h.rule,h.det,h.ev||'')).join(''):fi('INFO','لا توجد مؤشرات خطر','الرابط يبدو سليماً','')}
-      <div style="background:var(--s2);border:1px solid var(--b1);border-radius:var(--r8);padding:13px;margin-top:6px;">
-        <div style="font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:2px;margin-bottom:9px;">تفكيك مكونات الرابط</div>
-        <table class="mt">
-          <tr><td class="mk">البروتوكول</td><td class="mv ${parsed.protocol==='http:'?'al':''}">${esc(parsed.protocol)}</td></tr>
-          <tr><td class="mk">النطاق</td><td class="mv">${esc(parsed.host)}</td></tr>
-          <tr><td class="mk">المسار</td><td class="mv">${esc(parsed.path)}</td></tr>
-          <tr><td class="mk">المعاملات</td><td class="mv ${parsed.query!=='—'?'al':''}">${esc(parsed.query)}</td></tr>
-          <tr><td class="mk">إنتروبيا النطاق</td><td class="mv ${ent>3.8?'al':''}">${ent.toFixed(4)} bits/char</td></tr>
-          <tr><td class="mk">الطول الإجمالي</td><td class="mv">${url.length} حرف</td></tr>
-        </table>
-      </div>
-    </div></div>`);
-  gBar('gf-u1',pct,gfc);
-  gBar('gf-u2',Math.min(Math.round(ent*18),100),ent>3.8?'gf-crit':'gf-safe');
-}
-
-function exURL(){ $('url-in').value='http://paypa1-secure-account-verify-login.xyz/update/password?token=A7F3kX92&session=confirm&redirect=http%3A%2F%2Fevil.ru%2Fsteal'; }
-
-/* ═══ MOD-03: IMAGE FORENSICS ═══ */
-let upFile=null;
-function dzo(e){e.preventDefault();$('dz').classList.add('on');}
-function dzl(){$('dz').classList.remove('on');}
-function dzd(e){e.preventDefault();dzl();const f=e.dataTransfer.files[0];if(f)setF(f);}
-function hf(e){const f=e.target.files[0];if(f)setF(f);}
-function setF(f){
-  upFile=f;
-  const fp=$('fp');fp.style.display='block';
-  fp.innerHTML=`<span style="color:var(--grn)">✓ تم رفع:</span> ${esc(f.name)} · ${(f.size/1024).toFixed(1)} KB · ${f.type}`;
-}
-
-async function runIMG(){
-  const steps=['EXIF Parser...','XMP Metadata...','ICC Profile...','Hash Verification...','ELA Analysis...','Steganography Scan...','Generating Report...'];
-  showLdr('img',true,steps);
-  await sleep(3300);
-  showLdr('img',false);
-  renderIMG(upFile);
-}
-function exIMG(){
-  showLdr('img',true,['EXIF Parser...','ELA Analysis...','Metadata Check...','Report...']);
-  setTimeout(()=>{showLdr('img',false);renderIMG(null);},3000);
-}
-
-function renderIMG(file){
-  const name=file?esc(file.name):'evidence_doc_032.jpg';
-  const size=file?(file.size/1024).toFixed(1):'1,247.3';
-  const type=file?file.type:'image/jpeg';
-
-  const exifRows=[
-    {k:'اسم الملف',      v:name,                                  c:''},
-    {k:'الحجم',          v:size+' KB',                             c:''},
-    {k:'النوع / MIME',   v:type,                                   c:''},
-    {k:'الأبعاد',        v:'2560 × 1440 px',                       c:''},
-    {k:'عمق الألوان',    v:'24-bit sRGB',                           c:''},
-    {k:'برنامج التحرير', v:'Adobe Photoshop 26.0 (Windows)',        c:'al'},
-    {k:'تاريخ الرقمنة',  v:'2024-04-10 08:14:22 UTC',              c:''},
-    {k:'آخر تعديل',      v:'2024-04-10 15:52:07 UTC (Δ 7h 38m)',   c:'al'},
-    {k:'بيانات GPS',     v:'24.7136°N, 46.6753°E — الرياض، SA',   c:''},
-    {k:'الكاميرا',       v:'Apple iPhone 15 Pro — f/1.78',          c:''},
-    {k:'ISO Speed',      v:'ISO-125',                               c:''},
-    {k:'Thumbnail EXIF', v:'⚠ غائب — مؤشر إعادة حفظ',             c:'al'},
-    {k:'EXIF ↔ XMP',    v:'⚠ تعارض في الطابع الزمني',             c:'dg'},
-    {k:'ICC Profile',    v:'sRGB IEC61966-2.1',                    c:''},
-    {k:'JPEG Quality',   v:'~82% — أقل من الافتراضي (92-95%)',     c:'al'},
-    {k:'SHA-256',        v:'a3f9b2c1d...e8f1c4 [Verified]',        c:'ok'},
-    {k:'MD5',            v:'5d41402abc4b2a76b9... [Verified]',     c:'ok'},
-  ];
-
-  const imgF=[
-    {s:'CRITICAL',r:'Adobe Photoshop — بصمة تحرير موثقة',     d:'EXIF:Software يسجل Photoshop 26.0 — دليل مباشر على التعديل',               ev:'EXIF:Software = Adobe Photoshop 26.0 (Windows)'},
-    {s:'CRITICAL',r:'Error Level Analysis (ELA) — شذوذ في الضغط', d:'مستويات ضغط JPEG غير متجانسة في الربع السفلي الأيسر — منطقة لصق محتملة', ev:'ELA Anomaly: x:1280–1920, y:900–1440 px'},
-    {s:'HIGH',    r:'تعارض EXIF ↔ XMP في الطابع الزمني',      d:'DateTimeOriginal في EXIF يختلف عن XMP:CreateDate بفارق 7 ساعات و38 دقيقة',    ev:'Δ = 7h 38m 5s'},
-    {s:'HIGH',    r:'Thumbnail EXIF غائب',                     d:'الصور الأصلية تحتفظ بـ thumbnail — غيابه يدل على إعادة التصدير يدوياً',       ev:'EXIF:ThumbnailOffset = NULL'},
-    {s:'MEDIUM',  r:'جودة JPEG 82% — أقل من إنتاج الكاميرا',  d:'iPhone 15 Pro ينتج JPEG بجودة 92-95% — الجودة المنخفضة تدل على إعادة الحفظ', ev:'JPEG QF ≈ 82 (Expected: 92-95)'},
-    {s:'MEDIUM',  r:'GPS عالي الدقة — قد يكون مُضافاً يدوياً', d:'دقة GPS غير متوافقة مع بيانات الكاميرا — احتمال الإضافة اليدوية',             ev:'GPS Precision: 4 decimal places'},
-    {s:'LOW',     r:'فجوة زمنية مشبوهة: 7 ساعات و38 دقيقة',  d:'الالتقاط 08:14 والتعديل 15:52 — يستدعي التحقق من سياق الاستخدام',            ev:'Capture: 08:14:22 / Modified: 15:52:07'},
-  ];
-
-  log('img',name,'crit');
-
-  showRes('image',`
-    <div class="card"><div class="card-hd"><div class="card-ttl"><div class="card-ico">🔬</div>التقرير الجنائي للصورة</div><span class="card-meta">${new Date().toLocaleString('ar')}</span></div>
-    <div class="card-bd">
-      <div class="vrd crit"><div class="vrd-ico">🚨</div><div class="vrd-main"><div class="vrd-title">دليل قوي على تزوير وتلاعب</div><div class="vrd-desc">رُصد ${imgF.length} مؤشر جنائي: بصمات تحرير، شذوذ ELA، تعارض بيانات وصفية.</div></div><div class="vrd-sc">82%</div></div>
-      ${gauge('احتمالية التزوير',82,'gf-crit','gf-i1')}
-      ${gauge('ثقة تحليل ELA',74,'gf-warn','gf-i2')}
-      <div class="findings-hd">المؤشرات الجنائية (${imgF.length})</div>
-      ${imgF.map(f=>fi(f.s,f.r,f.d,f.ev)).join('')}
-      <div style="background:var(--s2);border:1px solid var(--b1);border-radius:var(--r8);padding:13px;margin-top:6px;">
-        <div style="font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:2px;margin-bottom:9px;">البيانات الوصفية الكاملة — EXIF / XMP</div>
-        <table class="mt">${exifRows.map(r=>`<tr><td class="mk">${r.k}</td><td class="mv ${r.c}">${r.v}</td></tr>`).join('')}</table>
-      </div>
-      <div class="chips">
-        <span class="ch ch-r">Photoshop Detected</span>
-        <span class="ch ch-r">ELA Anomaly</span>
-        <span class="ch ch-a">EXIF/XMP Mismatch</span>
-        <span class="ch ch-a">Thumbnail Missing</span>
-        <span class="ch ch-b">GPS Embedded</span>
-        <span class="ch ch-v">Re-encoded JPEG</span>
-      </div>
-    </div></div>`);
-  gBar('gf-i1',82,'gf-crit');
-  gBar('gf-i2',74,'gf-warn');
-}
-
-/* ═══ DASHBOARD ═══ */
-function rdash(){
-  const tot=S.c.ph+S.c.url+S.c.img;
-  $('d-tot').textContent=tot;
-  $('d-crit').textContent=S.t.crit;
-  $('d-warn').textContent=S.t.warn;
-  $('d-safe').textContent=S.t.safe;
-  const p=k=>tot>0?Math.round((S.c[k]/tot)*100):0;
-  [['b1','ph'],['b2','url'],['b3','img']].forEach(([bid,k])=>{
-    setTimeout(()=>{const e=$(bid);if(e)e.style.width=p(k)+'%';},150);
-    const pe=$(bid+'p');if(pe)pe.textContent=p(k)+'%';
-  });
-  const log=$('oplog');
-  if(S.ops.length){
-    log.innerHTML=S.ops.slice(0,6).map(o=>`
-      <div class="loge ${o.lvl}">
-        <span class="le-ico">${o.lvl==='crit'?'🚨':o.lvl==='warn'?'⚠️':'✓'}</span>
-        <span class="le-txt">${esc(o.label)}</span>
-        <span class="le-ts">${o.ts}</span>
-      </div>`).join('');
-  }
-}
-
-/* ═══ REPORT ═══ */
-function genRep(){
-  const tot=S.c.ph+S.c.url+S.c.img;
-  const ts=new Date().toLocaleString('ar-SA');
-  const sid=$('sid')?$('sid').textContent.replace('SESSION: ',''):'—';
-  const out=$('rep-out');
-  out.classList.add('on');
-  out.innerHTML=`
-    <div style="border-top:2px solid var(--pri);padding-top:18px;">
-      <div class="rep-title">DIGITAL FORENSIC REPORT</div>
-      <div class="rep-sub">Generated: ${ts} · ${sid}</div>
-      <div class="rep-sec">
-        <div class="rep-sec-ttl">1 · معلومات القضية</div>
-        <table class="mt">
-          <tr><td class="mk">رقم الجلسة</td><td class="mv">${sid}</td></tr>
-          <tr><td class="mk">التاريخ والوقت</td><td class="mv">${ts}</td></tr>
-          <tr><td class="mk">المنصة</td><td class="mv">DFAS v1.0 — Isolated Local Env</td></tr>
-          <tr><td class="mk">معيار الأدلة</td><td class="mv">ISO/IEC 27037:2012 · NIST SP 800-86</td></tr>
-          <tr><td class="mk">تصنيف البيانات</td><td class="mv">TLP:AMBER — تعليمي فقط</td></tr>
-        </table>
-      </div>
-      <div class="rep-sec">
-        <div class="rep-sec-ttl">2 · ملخص التحليلات</div>
-        <table class="mt">
-          <tr><td class="mk">إجمالي العمليات</td><td class="mv">${tot}</td></tr>
-          <tr><td class="mk">MOD-01 · رسائل التصيد</td><td class="mv">${S.c.ph}</td></tr>
-          <tr><td class="mk">MOD-02 · روابط خبيثة</td><td class="mv">${S.c.url}</td></tr>
-          <tr><td class="mk">MOD-03 · جنائيات صور</td><td class="mv">${S.c.img}</td></tr>
-        </table>
-      </div>
-      <div class="rep-sec">
-        <div class="rep-sec-ttl">3 · ملخص التهديدات</div>
-        <table class="mt">
-          <tr><td class="mk">تهديدات حرجة</td><td class="mv dg">${S.t.crit}</td></tr>
-          <tr><td class="mk">تهديدات متوسطة</td><td class="mv al">${S.t.warn}</td></tr>
-          <tr><td class="mk">نتائج سليمة</td><td class="mv ok">${S.t.safe}</td></tr>
-          <tr><td class="mk">نسبة الكشف</td><td class="mv">${tot>0?Math.round(((S.t.crit+S.t.warn)/tot)*100):0}%</td></tr>
-        </table>
-      </div>
-      <div class="rep-sec">
-        <div class="rep-sec-ttl">4 · سجل العمليات</div>
-        ${S.ops.length?S.ops.map((o,i)=>`<div style="font-size:10px;font-family:var(--mono);color:var(--t2);padding:4px 0;border-bottom:1px solid var(--b1);">[${String(i+1).padStart(2,'0')}] ${o.ts} · ${o.lvl.toUpperCase()} · ${o.label}</div>`).join(''):`<p style="font-size:11px;color:var(--t3)">لا توجد عمليات مسجلة</p>`}
-      </div>
-      <div style="margin-top:16px;padding:11px 13px;background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:var(--r8);font-size:10px;color:var(--t3);line-height:1.7;">
-        ⚖ <strong style="color:var(--t2)">إخلاء مسؤولية:</strong> هذا التقرير أُنشئ في بيئة تعليمية معزولة. البيانات افتراضية لأغراض بحثية حصراً. لا يُعدّ دليلاً قانونياً دون مراجعة خبير جنائي رقمي معتمد.
-      </div>
-    </div>`;
-  rdash();
-}
-</script>
+<script src="src/dfas-db.js"></script>
+<script src="src/dfas-engines.js"></script>
+<script src="src/dfas-charts.js"></script>
+<script src="src/dfas-ui.js"></script>
 </body>
 </html>
