@@ -13,7 +13,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 const SESSION_ID = 'SID-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).slice(2,6).toUpperCase();
 
 /* ── In-memory state (also persisted to IndexedDB) ── */
-const STATE = { ops:[], counts:{ph:0,url:0,img:0,em:0,hash:0} };
+const STATE = { ops:[], counts:{ph:0,url:0,img:0,em:0,hash:0,ioc:0,stego:0,tl:0,nl:0,atk:0} };
 
 /* ═══════════════════════════════════
    INIT
@@ -123,11 +123,12 @@ function animGauge(id, pct, cls) {
    FINDING RENDERER
 ═══════════════════════════════════ */
 function renderFi(f) {
+  const title = f.rule || f.label || '';
   return `<div class="fi">
     <div class="fi-sv"><span class="sv sv-${f.sev}">${f.sev}</span></div>
     <div class="fi-body">
-      <div class="fi-rule">${esc(f.rule)}</div>
-      <div class="fi-det">${esc(f.det)}</div>
+      <div class="fi-rule">${esc(title)}</div>
+      <div class="fi-det">${esc(f.det || '')}</div>
       ${f.ev ? `<span class="fi-ev">${esc(f.ev)}</span>` : ''}
     </div>
   </div>`;
@@ -316,6 +317,7 @@ function setImgFile(f) {
 }
 
 async function runIMG() {
+  if (!_imgFile) { alert('الرجاء رفع ملف صورة أولاً أو استخدام زر "تحليل نموذجي"'); return; }
   const steps=['EXIF Parser...','XMP Metadata...','ICC Profile...','Hash Verify...','ELA Analysis...','Steganography Scan...','Report...'];
   showLoader('img', true, steps);
   await sleep(3200);
@@ -559,11 +561,10 @@ async function refreshCases() {
 
 async function deleteCase(id) {
   if (!confirm('هل تريد حذف هذه القضية؟')) return;
-  // Simple delete using IndexedDB directly
   try {
-    await DFAS_DB.saveCase({ caseId:id, _deleted:true, ts:Date.now() });
+    await DFAS_DB.deleteCase(id);
     await refreshCases();
-  } catch(e) {}
+  } catch(e) { console.error('deleteCase error:', e); }
 }
 
 /* ═══════════════════════════════════
@@ -647,11 +648,16 @@ function renderModBars(stats) {
   if (!el) return;
   const total = stats.total || 1;
   const mods = [
-    { k:'ph',   label:'MOD-01 · تصيد', color:'var(--red)' },
-    { k:'url',  label:'MOD-02 · روابط', color:'var(--amb)' },
-    { k:'img',  label:'MOD-03 · صور',   color:'var(--vio)' },
-    { k:'em',   label:'MOD-04 · بريد',  color:'var(--grn)' },
-    { k:'hash', label:'MOD-05 · هاش',   color:'var(--cya)' },
+    { k:'ph',    label:'MOD-01 · تصيد',    color:'var(--red)' },
+    { k:'url',   label:'MOD-02 · روابط',   color:'var(--amb)' },
+    { k:'img',   label:'MOD-03 · صور',     color:'var(--vio)' },
+    { k:'em',    label:'MOD-04 · بريد',    color:'var(--grn)' },
+    { k:'hash',  label:'MOD-05 · هاش',     color:'var(--cya)' },
+    { k:'ioc',   label:'MOD-06 · IOC',     color:'var(--pri)' },
+    { k:'stego', label:'MOD-07 · إخفاء',   color:'#8b5cf6' },
+    { k:'tl',    label:'MOD-08 · زمني',    color:'var(--amb)' },
+    { k:'nl',    label:'MOD-09 · شبكة',    color:'var(--grn)' },
+    { k:'atk',   label:'MOD-10 · ATT&CK',  color:'var(--red)' },
   ];
   el.innerHTML = mods.map(m => {
     const cnt = stats.byType?.[m.k] || 0;
@@ -728,6 +734,11 @@ async function generateReport() {
           <tr><td class="mk">MOD-03 · جنائيات صور</td><td class="mv">${stats.byType?.img||0}</td></tr>
           <tr><td class="mk">MOD-04 · ترويسات بريد</td><td class="mv">${stats.byType?.em||0}</td></tr>
           <tr><td class="mk">MOD-05 · بصمات رقمية</td><td class="mv">${stats.byType?.hash||0}</td></tr>
+          <tr><td class="mk">MOD-06 · كاشف IOC</td><td class="mv">${stats.byType?.ioc||0}</td></tr>
+          <tr><td class="mk">MOD-07 · كشف الإخفاء</td><td class="mv">${stats.byType?.stego||0}</td></tr>
+          <tr><td class="mk">MOD-08 · الخط الزمني</td><td class="mv">${stats.byType?.tl||0}</td></tr>
+          <tr><td class="mk">MOD-09 · سجلات الشبكة</td><td class="mv">${stats.byType?.nl||0}</td></tr>
+          <tr><td class="mk">MOD-10 · MITRE ATT&CK</td><td class="mv">${stats.byType?.atk||0}</td></tr>
         </table>
       </div>
 
@@ -773,7 +784,7 @@ async function clearAllData() {
   try {
     await DFAS_DB.clearAll();
     STATE.ops = [];
-    STATE.counts = {ph:0,url:0,img:0,em:0,hash:0};
+    STATE.counts = {ph:0,url:0,img:0,em:0,hash:0,ioc:0,stego:0,tl:0,nl:0,atk:0};
     renderHomeLog();
     refreshDashboard();
     $('nb-dash').textContent = '0';

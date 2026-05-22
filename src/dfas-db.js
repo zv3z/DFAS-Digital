@@ -143,7 +143,8 @@ const DFAS_DB = (() => {
     if (!c.caseId) c.caseId = 'CASE-' + Date.now().toString(36).toUpperCase();
     return put('cases', c);
   }
-  async function getCases()       { const a = await getAll('cases'); return a.sort((x,y)=>y.ts-x.ts); }
+  async function deleteCase(id)   { return del('cases', id); }
+  async function getCases()       { const a = await getAll('cases'); return a.filter(c=>!c._deleted).sort((x,y)=>y.ts-x.ts); }
   async function getCase(id)      { return get('cases', id); }
   async function updateCase(id, patch) {
     const existing = await getCase(id);
@@ -180,7 +181,7 @@ const DFAS_DB = (() => {
 
   return {
     open, saveAnalysis, getAnalyses, getStats, getDailyStats,
-    saveCase, getCases, getCase, updateCase,
+    saveCase, deleteCase, getCases, getCase, updateCase,
     saveReport, getReports,
     getSetting, setSetting,
     exportAll, clearAll, count

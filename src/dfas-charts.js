@@ -37,7 +37,7 @@ const DFAS_Charts = (() => {
       ${paths}
     </svg>
     <div class="donut-center">
-      <div class="donut-label">${label}</div>
+      <div class="donut-lbl">${label}</div>
       <div class="donut-sub">${sub}</div>
     </div>`;
   }

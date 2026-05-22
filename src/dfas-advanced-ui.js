@@ -106,6 +106,7 @@ function setStegoFile(f) {
 }
 
 async function runStego() {
+  if (!_stegoFile) { alert('الرجاء رفع صورة أولاً أو استخدام زر "تحليل نموذجي"'); return; }
   const steps = ['تحميل الصورة...','تحليل البتات (LSB)...','اختبار Chi-Square...','تحليل الإنتروبيا...','Pixel Pair Analysis...','فحص حجم الملف...','تجميع النتائج...'];
   showLoader('stego', true, steps);
   await sleep(3500);
