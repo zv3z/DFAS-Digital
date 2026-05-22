@@ -13,13 +13,12 @@ DFAS-Digital/
 ├── index.html          # المنصة الرئيسية الكاملة
 ├── src/
 │   ├── dfas-db.js      # Backend — قاعدة بيانات IndexedDB
-│   ├── dfas-engines.js # Analysis Engines MOD-01 → MOD-05
+│   ├── dfas-engines.js # Analysis Engines MOD-01 → MOD-16
 │   ├── dfas-charts.js  # SVG + Canvas Charts
 │   └── dfas-ui.js      # UI Controller + Dashboard
 └── docs/ · tests/ · reports/
 ```
 
-## المحركات المنفذة حالياً
 
 | | المحرك | الوصف |
 |-|--------|-------|
@@ -37,8 +36,6 @@ DFAS-Digital/
 ## التشغيل
 
 افتح `index.html` مباشرة في المتصفح — لا خادم ولا إنترنت مطلوب.
-
-تمت إضافة Motion Graphic تفاعلية في الصفحة الرئيسية مع مراعاة تقليل الحركة (Reduced Motion).
 
 ## التقنيات
 
