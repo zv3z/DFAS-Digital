@@ -56,7 +56,9 @@ function updateClock() {
 const PAGE_TITLES = {
   home:'الرئيسية', dashboard:'لوحة التحكم', phishing:'كاشف التصيد',
   url:'محلل الروابط', image:'جنائيات الصور', email:'ترويسات البريد',
-  hash:'البصمة الرقمية', cases:'إدارة القضايا', about:'عن المشروع'
+  hash:'البصمة الرقمية', cases:'إدارة القضايا', about:'عن المشروع',
+  ioc:'كاشف مؤشرات الاختراق', stego:'كاشف الإخفاء الرقمي',
+  tl:'الخط الزمني الرقمي', nl:'سجلات الشبكة', atk:'MITRE ATT&CK'
 };
 
 function nav(page) {

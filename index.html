@@ -358,6 +358,12 @@ table.dtbl{width:100%;border-collapse:collapse;font-size:11.5px;}
     <div class="ni" data-p="image"    onclick="nav('image')"><div class="ni-ico">🖼️</div>جنائيات الصور<span class="ni-badge">MOD-03</span></div>
     <div class="ni" data-p="email"    onclick="nav('email')"><div class="ni-ico">📧</div>ترويسات البريد<span class="ni-badge new">MOD-04</span></div>
     <div class="ni" data-p="hash"     onclick="nav('hash')"><div class="ni-ico">#️⃣</div>البصمة الرقمية<span class="ni-badge new">MOD-05</span></div>
+    <div class="sb-sec">محركات متقدمة</div>
+    <div class="ni" data-p="ioc"   onclick="nav('ioc')"><div class="ni-ico">🔍</div>كاشف IOC<span class="ni-badge new">MOD-06</span></div>
+    <div class="ni" data-p="stego" onclick="nav('stego')"><div class="ni-ico">👁</div>كاشف الإخفاء<span class="ni-badge new">MOD-07</span></div>
+    <div class="ni" data-p="tl"    onclick="nav('tl')"><div class="ni-ico">⏱</div>الخط الزمني<span class="ni-badge new">MOD-08</span></div>
+    <div class="ni" data-p="nl"    onclick="nav('nl')"><div class="ni-ico">🌐</div>سجلات الشبكة<span class="ni-badge new">MOD-09</span></div>
+    <div class="ni" data-p="atk"   onclick="nav('atk')"><div class="ni-ico">🎯</div>MITRE ATT&CK<span class="ni-badge new">MOD-10</span></div>
     <div class="sb-sec">الإدارة</div>
     <div class="ni" data-p="cases" onclick="nav('cases')"><div class="ni-ico">📁</div>إدارة القضايا</div>
     <div class="ni" data-p="about" onclick="nav('about')"><div class="ni-ico">ℹ️</div>عن المشروع</div>
@@ -387,10 +393,10 @@ table.dtbl{width:100%;border-collapse:collapse;font-size:11.5px;}
     <div class="hero">
       <div class="hero-badge">⚠ للاستخدام التعليمي والبحثي فقط ⚠</div>
       <h1>منصة التحليل الجنائي<br><em>للجرائم الرقمية</em></h1>
-      <p class="hero-desc">نظام متكامل لكشف وتحليل جرائم الاحتيال الإلكتروني بـ 5 محركات تحليل سيبراني، مدعوم بقاعدة بيانات IndexedDB محلية وتقارير ISO/IEC 27037</p>
+      <p class="hero-desc">نظام متكامل لكشف وتحليل جرائم الاحتيال الإلكتروني بـ 10 محركات تحليل سيبراني، مدعوم بقاعدة بيانات IndexedDB محلية وتقارير ISO/IEC 27037 وإطار MITRE ATT&CK</p>
       <div class="hero-kpis">
         <div class="hkpi"><span class="hkpi-v" id="hkpi-ind">47</span><span class="hkpi-l">مؤشر تحليلي</span></div>
-        <div class="hkpi"><span class="hkpi-v">5</span><span class="hkpi-l">محركات كشف</span></div>
+        <div class="hkpi"><span class="hkpi-v">10</span><span class="hkpi-l">محركات كشف</span></div>
         <div class="hkpi"><span class="hkpi-v" id="hkpi-total">0</span><span class="hkpi-l">تحليل منجز</span></div>
         <div class="hkpi"><span class="hkpi-v">ISO</span><span class="hkpi-l">27037 معتمد</span></div>
       </div>
@@ -427,6 +433,39 @@ table.dtbl{width:100%;border-collapse:collapse;font-size:11.5px;}
         <div class="mc-head"><div class="mc-ico">📁</div><div><div class="mc-id">CTRL</div><div class="mc-name">إدارة القضايا</div></div></div>
         <div class="mc-desc">إنشاء وإدارة قضايا الجرائم الرقمية مع سلسلة حفظ الأدلة.</div>
         <div class="mc-stats"><span class="ms">ISO 27037</span></div>
+      </div>
+    </div>
+    <div style="font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:2px;margin:8px 0 13px;font-family:var(--mono);">المحركات المتقدمة — وصول سريع</div>
+    <div class="mod-grid">
+      <div class="mc" style="--mcol:#0ea5e9" onclick="nav('ioc')">
+        <div class="mc-head"><div class="mc-ico">🔍</div><div><div class="mc-id">MOD-06</div><div class="mc-name">كاشف مؤشرات الاختراق</div></div></div>
+        <div class="mc-desc">كشف وتصنيف 18 نوع IOC: IPs، نطاقات، هاشات، CVEs، عناوين Crypto، PowerShell، ومزيد.</div>
+        <div class="mc-stats"><span class="ms">18 نمط</span><span class="ms">IOC/STIX</span></div>
+      </div>
+      <div class="mc" style="--mcol:#8b5cf6" onclick="nav('stego')">
+        <div class="mc-head"><div class="mc-ico">👁</div><div><div class="mc-id">MOD-07</div><div class="mc-name">كاشف الإخفاء الرقمي</div></div></div>
+        <div class="mc-desc">تحليل إحصائي للصور باستخدام LSB، Chi-Square، وPixel Pair Analysis لكشف البيانات المخفية.</div>
+        <div class="mc-stats"><span class="ms">LSB</span><span class="ms">Chi-Square</span><span class="ms">RS Method</span></div>
+      </div>
+      <div class="mc" style="--mcol:#f59e0b" onclick="nav('tl')">
+        <div class="mc-head"><div class="mc-ico">⏱</div><div><div class="mc-id">MOD-08</div><div class="mc-name">إعادة بناء الخط الزمني</div></div></div>
+        <div class="mc-desc">استخراج وترتيب الطوابع الزمنية من 7 صيغ مختلفة وكشف الشذوذ الزمني.</div>
+        <div class="mc-stats"><span class="ms">7 صيغ</span><span class="ms">Anomaly Detection</span></div>
+      </div>
+      <div class="mc" style="--mcol:#10b981" onclick="nav('nl')">
+        <div class="mc-head"><div class="mc-ico">🌐</div><div><div class="mc-id">MOD-09</div><div class="mc-name">تحليل سجلات الشبكة</div></div></div>
+        <div class="mc-desc">تحليل سجلات Apache/Nginx/Syslog وكشف Brute Force والماسحات والمسارات المشبوهة.</div>
+        <div class="mc-stats"><span class="ms">Apache</span><span class="ms">Brute Force</span><span class="ms">Scanner</span></div>
+      </div>
+      <div class="mc" style="--mcol:#ef4444" onclick="nav('atk')">
+        <div class="mc-head"><div class="mc-ico">🎯</div><div><div class="mc-id">MOD-10</div><div class="mc-name">MITRE ATT&CK Framework</div></div></div>
+        <div class="mc-desc">تعيين أوصاف الحوادث على 28 تقنية و13 تكتيك من إطار ATT&CK مع Kill Chain Visualization.</div>
+        <div class="mc-stats"><span class="ms">28 تقنية</span><span class="ms">13 تكتيك</span><span class="ms">Kill Chain</span></div>
+      </div>
+      <div class="mc" style="--mcol:#22d3ee" onclick="nav('about')">
+        <div class="mc-head"><div class="mc-ico">ℹ️</div><div><div class="mc-id">DOC</div><div class="mc-name">عن المشروع والمعايير</div></div></div>
+        <div class="mc-desc">وثائق المشروع والمعايير الدولية المعتمدة ISO 27037 · NIST · ACPO · ATT&CK.</div>
+        <div class="mc-stats"><span class="ms">ISO 27037</span><span class="ms">NIST 800-86</span></div>
       </div>
     </div>
     <div class="card">
@@ -603,6 +642,100 @@ table.dtbl{width:100%;border-collapse:collapse;font-size:11.5px;}
     </div>
   </section>
 
+  <!-- ══ PAGE: IOC ══ -->
+  <section class="page" id="page-ioc">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl"><div class="card-ico">🔍</div>محرك كشف مؤشرات الاختراق — IOC Detection Engine</div><span class="card-meta">MOD-06 / v1.0 · NEW</span></div>
+      <div class="card-bd">
+        <label class="flbl">نص للفحص (تقارير · سجلات · رسائل · ملفات نصية)</label>
+        <textarea id="ioc-in" style="min-height:170px" placeholder="الصق النص هنا للكشف التلقائي عن:&#10;• عناوين IPv4/IPv6 ونطاقات مشبوهة&#10;• هاشات MD5/SHA1/SHA256&#10;• أرقام CVE ومعرفات الثغرات&#10;• عناوين محافظ Crypto (BTC/ETH/XMR)&#10;• مؤشرات PowerShell و Macro&#10;• مفاتيح Registry ومسارات الملفات..."></textarea>
+        <div class="br">
+          <button class="btn btn-p" onclick="runIOC()">▶ كشف المؤشرات</button>
+          <button class="btn btn-s" onclick="$('ioc-in').value=IOCEngine.SAMPLE">◈ نموذج اختبار</button>
+          <button class="btn btn-d btn-sm" onclick="$('ioc-in').value='';$('r-ioc').innerHTML='';$('r-ioc').classList.remove('on')">✕ مسح</button>
+        </div>
+        <div class="ldr" id="ld-ioc"><span>فحص مؤشرات الاختراق...</span><div class="ldr-bar"><div class="ldr-fill"></div></div><span class="ldr-step" id="ls-ioc">IOC Parser...</span></div>
+      </div>
+    </div>
+    <div class="res" id="r-ioc"></div>
+  </section>
+
+  <!-- ══ PAGE: STEGO ══ -->
+  <section class="page" id="page-stego">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl"><div class="card-ico">👁</div>محرك كشف الإخفاء الرقمي — Steganography Detection Engine</div><span class="card-meta">MOD-07 / v1.0 · NEW</span></div>
+      <div class="card-bd">
+        <div class="dz" id="stego-dz" onclick="$('stego-file').click()" ondragover="stegoOver(event)" ondrop="stegoDrop(event)" ondragleave="stegoLeave()">
+          <div class="dz-ico">🔬</div>
+          <p><strong>ارفع صورة للفحص</strong> أو اسحبها وأفلتها هنا</p>
+          <p style="font-size:10px;color:var(--t4);margin-top:3px">PNG · BMP · TIFF — تحليل LSB + Chi-Square + Pixel Pair (RS Method)</p>
+        </div>
+        <input type="file" id="stego-file" style="display:none" accept="image/*" onchange="handleStegoFile(event)">
+        <div class="fpill" id="stego-pill"></div>
+        <div class="br">
+          <button class="btn btn-p" onclick="runStego()">▶ تشغيل التحليل الإحصائي</button>
+          <button class="btn btn-s" onclick="runStegoSample()">◈ تحليل نموذجي</button>
+        </div>
+        <div class="ldr" id="ld-stego"><span>تحليل البكسل والإحصاء...</span><div class="ldr-bar"><div class="ldr-fill"></div></div><span class="ldr-step" id="ls-stego">LSB Analysis...</span></div>
+      </div>
+    </div>
+    <div class="res" id="r-stego"></div>
+  </section>
+
+  <!-- ══ PAGE: TIMELINE ══ -->
+  <section class="page" id="page-tl">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl"><div class="card-ico">⏱</div>محرك إعادة بناء الخط الزمني — Digital Timeline Engine</div><span class="card-meta">MOD-08 / v1.0 · NEW</span></div>
+      <div class="card-bd">
+        <label class="flbl">سجلات النظام / ملفات الأحداث / بيانات الطوابع الزمنية</label>
+        <textarea id="tl-in" style="min-height:170px" placeholder="الصق السجلات هنا...&#10;&#10;يدعم: Apache Access Log · Syslog · Windows Event Log&#10;ISO 8601 · Unix Epoch · EXIF Timestamps&#10;&#10;مثال: 2024-03-15T10:23:45Z user root executed /bin/bash"></textarea>
+        <div class="br">
+          <button class="btn btn-p" onclick="runTimeline()">▶ إعادة بناء الخط الزمني</button>
+          <button class="btn btn-s" onclick="$('tl-in').value=TimelineEngine.SAMPLE">◈ نموذج اختبار</button>
+          <button class="btn btn-d btn-sm" onclick="$('tl-in').value='';$('r-tl').innerHTML='';$('r-tl').classList.remove('on')">✕ مسح</button>
+        </div>
+        <div class="ldr" id="ld-tl"><span>استخراج الطوابع الزمنية...</span><div class="ldr-bar"><div class="ldr-fill"></div></div><span class="ldr-step" id="ls-tl">Timestamp Parser...</span></div>
+      </div>
+    </div>
+    <div class="res" id="r-tl"></div>
+  </section>
+
+  <!-- ══ PAGE: NET LOGS ══ -->
+  <section class="page" id="page-nl">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl"><div class="card-ico">🌐</div>محرك تحليل سجلات الشبكة — Network Log Analysis Engine</div><span class="card-meta">MOD-09 / v1.0 · NEW</span></div>
+      <div class="card-bd">
+        <label class="flbl">سجلات الشبكة — Apache / Nginx / Syslog</label>
+        <textarea id="nl-in" style="min-height:180px" placeholder="الصق سجلات الشبكة هنا...&#10;&#10;مثال Apache:&#10;192.168.1.100 - - [12/Mar/2024:10:23:45 +0000] &quot;GET /admin/config.php HTTP/1.1&quot; 403 521&#10;&#10;مثال Syslog:&#10;Mar 12 10:25:01 server sshd[1234]: Failed password for root from 192.168.1.100"></textarea>
+        <div class="br">
+          <button class="btn btn-p" onclick="runNetLog()">▶ تحليل السجلات</button>
+          <button class="btn btn-s" onclick="$('nl-in').value=NetLogEngine.SAMPLE">◈ نموذج اختبار</button>
+          <button class="btn btn-d btn-sm" onclick="$('nl-in').value='';$('r-nl').innerHTML='';$('r-nl').classList.remove('on')">✕ مسح</button>
+        </div>
+        <div class="ldr" id="ld-nl"><span>تحليل حركة الشبكة...</span><div class="ldr-bar"><div class="ldr-fill"></div></div><span class="ldr-step" id="ls-nl">Log Parser...</span></div>
+      </div>
+    </div>
+    <div class="res" id="r-nl"></div>
+  </section>
+
+  <!-- ══ PAGE: MITRE ATT&CK ══ -->
+  <section class="page" id="page-atk">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl"><div class="card-ico">🎯</div>محرك تحليل MITRE ATT&CK Framework</div><span class="card-meta">MOD-10 / v1.0 · NEW</span></div>
+      <div class="card-bd">
+        <label class="flbl">نص الحادث / تقرير التهديد / نتائج التحليل</label>
+        <textarea id="atk-in" style="min-height:170px" placeholder="الصق وصف الحادث أو تقرير التهديد هنا للتعيين التلقائي على إطار MITRE ATT&CK...&#10;&#10;مثال: The attacker sent a spearphishing email with malicious attachment. PowerShell was used to execute a dropper. Credentials were dumped from LSASS memory. Lateral movement via pass-the-hash. Data staged for exfiltration over C2 HTTPS channel."></textarea>
+        <div class="br">
+          <button class="btn btn-p" onclick="runATTACK()">▶ تعيين على ATT&CK</button>
+          <button class="btn btn-s" onclick="$('atk-in').value=ATTACKEngine.SAMPLE_TEXT">◈ نموذج اختبار</button>
+          <button class="btn btn-d btn-sm" onclick="$('atk-in').value='';$('r-atk').innerHTML='';$('r-atk').classList.remove('on')">✕ مسح</button>
+        </div>
+        <div class="ldr" id="ld-atk"><span>تعيين تقنيات ATT&CK...</span><div class="ldr-bar"><div class="ldr-fill"></div></div><span class="ldr-step" id="ls-atk">Technique Mapping...</span></div>
+      </div>
+    </div>
+    <div class="res" id="r-atk"></div>
+  </section>
+
   <!-- ══ PAGE: CASES ══ -->
   <section class="page" id="page-cases">
     <div class="card">
@@ -624,7 +757,7 @@ table.dtbl{width:100%;border-collapse:collapse;font-size:11.5px;}
     <div class="about-hero">
       <div class="about-tag">🔬 فكرة المشروع</div>
       <h2>نظام التحليل الجنائي لـ <em>الجرائم الرقمية</em></h2>
-      <p>DFAS هو منصة تحليل جنائي رقمي متكاملة تعمل بالكامل بدون إنترنت (Offline-First)، مُصمَّمة لكشف وتحليل الجرائم الإلكترونية في البيئة العربية. تجمع 5 محركات تحليل سيبراني في واجهة عربية كاملة مع قاعدة بيانات IndexedDB محلية وتقارير جنائية موثقة وفق المعايير الدولية.</p>
+      <p>DFAS هو منصة تحليل جنائي رقمي متكاملة تعمل بالكامل بدون إنترنت (Offline-First)، مُصمَّمة لكشف وتحليل الجرائم الإلكترونية في البيئة العربية. تجمع <strong>10 محركات تحليل سيبراني</strong> في واجهة عربية كاملة — من تحليل التصيد وكشف IOC وجنائيات الصور إلى التحليل الإحصائي للإخفاء الرقمي وتعيين الهجمات على إطار MITRE ATT&CK — مع قاعدة بيانات IndexedDB محلية وتقارير جنائية موثقة وفق المعايير الدولية.</p>
       <div class="std-chips">
         <span class="sc">ISO/IEC 27037:2012</span><span class="sc">NIST SP 800-86</span><span class="sc">RFC 3227</span>
         <span class="sc">ACPO Guidelines v5</span><span class="sc">TLP:AMBER</span><span class="sc">IndexedDB</span><span class="sc">Offline-First</span>
@@ -676,14 +809,37 @@ table.dtbl{width:100%;border-collapse:collapse;font-size:11.5px;}
             <ul class="fl"><li>SPF / DKIM / DMARC Authentication Check</li><li>Routing Chain Visualization</li><li>From ↔ Return-Path ↔ Reply-To Mismatch Detection</li></ul>
           </div>
         </div>
+        <div style="height:1px;background:var(--b1);margin:14px 0;"></div>
+        <div class="g2">
+          <div>
+            <div style="font-size:10.5px;font-weight:700;color:var(--cya);margin-bottom:8px;font-family:var(--mono);">MOD-06 — IOC Detection Engine</div>
+            <ul class="fl"><li>18 نمط Regex لكشف: IPs، نطاقات، هاشات، CVEs، Crypto</li><li>تصنيف تلقائي بـ 8 فئات مع تقييم مستوى الخطورة</li><li>كشف PowerShell, Macro, Registry, Named Pipes, YARA</li></ul>
+            <div style="font-size:10.5px;font-weight:700;color:var(--vio);margin:13px 0 8px;font-family:var(--mono);">MOD-07 — Steganography Detection Engine</div>
+            <ul class="fl"><li>LSB (Least Significant Bit) Analysis على قنوات RGB</li><li>Chi-Square Statistical Test لكشف التوزيع غير الطبيعي</li><li>Pixel Pair Analysis (RS Method) للكشف الدقيق</li></ul>
+          </div>
+          <div>
+            <div style="font-size:10.5px;font-weight:700;color:var(--amb);margin-bottom:8px;font-family:var(--mono);">MOD-08 — Digital Timeline Engine</div>
+            <ul class="fl"><li>7 صيغ طوابع زمنية: ISO8601، Syslog، Apache، Windows...</li><li>كشف الشذوذ: فجوات، انفجارات، توقيت خارج الدوام</li><li>SVG Timeline Visualization مع ترتيب تسلسلي</li></ul>
+            <div style="font-size:10.5px;font-weight:700;color:var(--grn);margin:13px 0 8px;font-family:var(--mono);">MOD-09 — Network Log Analysis Engine</div>
+            <ul class="fl"><li>10 مسارات Exploit معروفة + 3 User-Agent ماسحين</li><li>كشف Brute Force، SQL Injection، Path Traversal، Log4Shell</li><li>إحصاء Top IPs وتوزيع أكواد HTTP وحجم البيانات</li></ul>
+          </div>
+        </div>
+        <div style="height:1px;background:var(--b1);margin:14px 0;"></div>
+        <div>
+          <div style="font-size:10.5px;font-weight:700;color:var(--red);margin-bottom:8px;font-family:var(--mono);">MOD-10 — MITRE ATT&CK Framework Mapper</div>
+          <div class="g2">
+            <ul class="fl"><li>قاعدة بيانات 28 تقنية ATT&CK في 13 تكتيك مُدمجة محلياً</li><li>18 قاعدة تعيين تلقائي من النص إلى تقنيات ATT&CK</li></ul>
+            <ul class="fl"><li>Kill Chain Stage Estimation وتصنيف مرحلة الهجوم</li><li>ATT&CK Matrix SVG Visualization تفاعلية</li></ul>
+          </div>
+        </div>
       </div>
     </div>
     <div class="g2">
       <div class="card">
         <div class="card-hd"><div class="card-ttl"><div class="card-ico">🗺️</div>خارطة التطوير</div></div>
         <div class="card-bd">
-          <div class="rm-item"><div class="rm-ver">v2.0 ✅</div><div class="rm-info"><h4>الإصدار الحالي</h4><p>5 محركات + IndexedDB + لوحة تحكم + قضايا + تقارير ISO</p></div></div>
-          <div class="rm-item"><div class="rm-ver" style="color:var(--t3)">v3.0 🔄</div><div class="rm-info"><h4>قريباً</h4><p>AraBERT NLP · قوائم سوداء محلية · WHOIS · Clone Detection</p></div></div>
+          <div class="rm-item"><div class="rm-ver">v2.0 ✅</div><div class="rm-info"><h4>الإصدار الحالي</h4><p>10 محركات + IndexedDB + لوحة تحكم + قضايا + تقارير ISO + MITRE ATT&CK + IOC/Stego/Timeline/NetLogs</p></div></div>
+          <div class="rm-item"><div class="rm-ver" style="color:var(--t3)">v3.0 🔄</div><div class="rm-info"><h4>قريباً</h4><p>AraBERT NLP · قوائم سوداء محلية · WHOIS · Clone Detection · STIX/TAXII Export</p></div></div>
           <div class="rm-item"><div class="rm-ver" style="color:var(--t4)">v4.0 🔮</div><div class="rm-info"><h4>مستقبلي</h4><p>SIEM Integration (STIX/TAXII) · AI · Government Cloud</p></div></div>
         </div>
       </div>
@@ -712,5 +868,7 @@ table.dtbl{width:100%;border-collapse:collapse;font-size:11.5px;}
 <script src="src/dfas-engines.js"></script>
 <script src="src/dfas-charts.js"></script>
 <script src="src/dfas-ui.js"></script>
+<script src="src/dfas-advanced-engines.js"></script>
+<script src="src/dfas-advanced-ui.js"></script>
 </body>
 </html>
