@@ -19,7 +19,7 @@ DFAS-Digital/
 └── docs/ · tests/ · reports/
 ```
 
-## المحركات
+## المحركات المنفذة حالياً
 
 | | المحرك | الوصف |
 |-|--------|-------|
@@ -28,10 +28,16 @@ DFAS-Digital/
 | MOD-03 | جنائيات الصور | EXIF/XMP + ELA Analysis |
 | MOD-04 | ترويسات البريد | SPF/DKIM/DMARC |
 | MOD-05 | البصمة الرقمية | SHA-256 / SHA-1 / MD5 |
+| MOD-06 | كاشف IOC | مؤشرات اختراق + Regex + Risk Score |
+| MOD-07 | كاشف الإخفاء | LSB/Chi-Square/Entropy |
+| MOD-08 | الخط الزمني الرقمي | استخراج timestamps وكشف الشذوذ |
+| MOD-09 | تحليل سجلات الشبكة | Apache/Nginx/Syslog + Anomaly Detection |
+| MOD-10 | MITRE ATT&CK Mapper | Mapping للتكتيكات والتقنيات |
 
 ## التشغيل
 
 افتح `index.html` مباشرة في المتصفح — لا خادم ولا إنترنت مطلوب.
+
 
 ## التقنيات
 

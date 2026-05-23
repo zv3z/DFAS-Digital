@@ -29,6 +29,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   // Particle background
   DFAS_Charts.initParticles('bg');
 
+
   // Open DB
   try { await DFAS_DB.open(); } catch(e) { console.warn('IndexedDB unavailable:', e); }
 
