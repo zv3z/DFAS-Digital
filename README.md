@@ -13,13 +13,11 @@ DFAS-Digital/
 ├── index.html          # المنصة الرئيسية الكاملة
 ├── src/
 │   ├── dfas-db.js      # Backend — قاعدة بيانات IndexedDB
-│   ├── dfas-engines.js # Analysis Engines MOD-01 → MOD-05
+│   ├── dfas-engines.js # Analysis Engines MOD-01 → MOD-16
 │   ├── dfas-charts.js  # SVG + Canvas Charts
 │   └── dfas-ui.js      # UI Controller + Dashboard
 └── docs/ · tests/ · reports/
 ```
-
-## المحركات المنفذة حالياً
 
 | | المحرك | الوصف |
 |-|--------|-------|
