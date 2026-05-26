@@ -25,14 +25,29 @@ export interface EngineResult {
 export interface PhishingResult extends EngineResult {
   score: number;
   findings: Finding[];
-  meta: { words: number; exclamations: number; urls: string[]; foreignTokens: number; lines: number };
+  meta: {
+    words: number;
+    exclamations: number;
+    urls: string[];
+    foreignTokens: number;
+    lines: number;
+  };
 }
 
 /* MOD-02 URL */
 export interface UrlResult extends EngineResult {
   score: number;
   findings: Finding[];
-  parsed: { protocol: string; host: string; hostname: string; path: string; query: string; hash: string; port: string; ok: boolean };
+  parsed: {
+    protocol: string;
+    host: string;
+    hostname: string;
+    path: string;
+    query: string;
+    hash: string;
+    port: string;
+    ok: boolean;
+  };
   entropy: number;
 }
 
@@ -73,7 +88,14 @@ export interface HashResult {
 
 /* MOD-06 IOC */
 export interface IOCResult extends EngineResult {
-  results: { id: string; cat: string; sev: Severity; label: string; count: number; samples: { value: string; extra: string }[] }[];
+  results: {
+    id: string;
+    cat: string;
+    sev: Severity;
+    label: string;
+    count: number;
+    samples: { value: string; extra: string }[];
+  }[];
   stats: { total: number; byCategory: Record<string, number>; bySeverity: Record<string, number> };
   extracted: Record<string, string[]>;
 }
@@ -100,13 +122,25 @@ export interface TimelineResult {
 /* MOD-09 Network Log */
 export interface NetLogResult extends EngineResult {
   findings: Finding[];
-  stats: { totalReq: number; totalLines: number; parsed: number; totalBytes: number; topIPs: [string, number][]; statusMap: Record<number, number>; exploitPaths: number; scannerCount: number };
+  stats: {
+    totalReq: number;
+    totalLines: number;
+    parsed: number;
+    totalBytes: number;
+    topIPs: [string, number][];
+    statusMap: Record<number, number>;
+    exploitPaths: number;
+    scannerCount: number;
+  };
 }
 
 /* MOD-10 MITRE ATT&CK */
 export interface MitreResult {
   techniques: { id: string; name: string; tactic: string; desc: string; confidence: number }[];
-  byTactic: Record<string, { name: string; color: string; ar: string; id: string; techniques: unknown[] }>;
+  byTactic: Record<
+    string,
+    { name: string; color: string; ar: string; id: string; techniques: unknown[] }
+  >;
   total: number;
   tacticCount: number;
   killChainStage: number;
@@ -167,4 +201,18 @@ export interface EndpointResult extends EngineResult {
   };
 }
 
-export type AnyEngineResult = PhishingResult | UrlResult | ImageResult | EmailResult | HashResult | IOCResult | StegoResult | TimelineResult | NetLogResult | MitreResult | MemoryResult | DiskResult | PcapResult | EndpointResult;
+export type AnyEngineResult =
+  | PhishingResult
+  | UrlResult
+  | ImageResult
+  | EmailResult
+  | HashResult
+  | IOCResult
+  | StegoResult
+  | TimelineResult
+  | NetLogResult
+  | MitreResult
+  | MemoryResult
+  | DiskResult
+  | PcapResult
+  | EndpointResult;

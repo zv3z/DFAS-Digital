@@ -39,16 +39,17 @@ if (indexJsFiles.length > 1) {
   // Fall back: pick the one that contains "StartClient" or simply the larger filename
   // We identify the TanStack Start bootstrap by looking for "StartClient" in a quick grep.
   const { execSync } = await import("child_process");
-  mainJs = indexJsFiles.find((f) => {
-    try {
-      execSync(`grep -l "StartClient\\|hydrateRoot\\|createRoot" "${ASSETS}/${f}"`, {
-        stdio: "pipe",
-      });
-      return true;
-    } catch {
-      return false;
-    }
-  }) ?? indexJsFiles[indexJsFiles.length - 1];
+  mainJs =
+    indexJsFiles.find((f) => {
+      try {
+        execSync(`grep -l "StartClient\\|hydrateRoot\\|createRoot" "${ASSETS}/${f}"`, {
+          stdio: "pipe",
+        });
+        return true;
+      } catch {
+        return false;
+      }
+    }) ?? indexJsFiles[indexJsFiles.length - 1];
 }
 
 if (!cssFile) {

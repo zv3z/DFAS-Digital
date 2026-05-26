@@ -8,8 +8,7 @@ export const getRouter = () => {
   // BASE_URL is injected by Vite from the `base` config option.
   // In production GitHub Pages build it equals '/DFAS-Digital/'.
   // Strip the trailing slash so TanStack Router gets '/DFAS-Digital'.
-  const basepath =
-    (import.meta.env.BASE_URL ?? "/").replace(/\/$/, "") || "/";
+  const basepath = (import.meta.env.BASE_URL ?? "/").replace(/\/$/, "") || "/";
 
   const router = createRouter({
     routeTree,
