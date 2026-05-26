@@ -65,6 +65,11 @@ console.log(`✓  CSS  : ${cssFile}`);
 console.log(`✓  JS   : ${mainJs}`);
 
 // ── Generate HTML ─────────────────────────────────────────────────
+// TanStack Start requires window.$_TSR to be present (normally injected by
+// the SSR server). On GitHub Pages (static hosting) there is no SSR server,
+// so we inject a minimal stub that satisfies the invariant check
+// `window.$_TSR || throwInvariant()` in the client bundle, then lets the
+// router fall through to a full client-side render.
 const html = `<!doctype html>
 <html lang="ar" dir="rtl" class="dark">
   <head>
@@ -78,12 +83,25 @@ const html = `<!doctype html>
     <meta property="og:type" content="website" />
     <link rel="icon" type="image/svg+xml" href="${BASE}favicon.svg" />
     <link rel="stylesheet" href="${BASE}assets/${cssFile}" />
+    <!-- TanStack Start SSR stub: satisfies the $_TSR invariant check in the
+         client bundle so the app can boot in CSR mode on static hosts. -->
+    <script>
+      // TanStack Start SSR hydration stub for static/GitHub-Pages hosting.
+      // The client bundle calls vE(router) during startup which asserts:
+      //   window.$_TSR || throw()
+      //   window.$_TSR.router || throw()
+      // Without an SSR server we provide a no-op stub so the router falls
+      // back to a full client-side render instead of crashing.
+      window.$_TSR = {
+        buffer: [],
+        initialized: false,
+        router: { matches: [], manifest: undefined, dehydratedData: undefined },
+        t: null,
+        h: function () {},
+      };
+    </script>
   </head>
   <body>
-    <!--
-      TanStack Start client bootstrap.
-      hydrateRoot will perform client-side rendering when no SSR HTML is present.
-    -->
     <script type="module" src="${BASE}assets/${mainJs}"></script>
   </body>
 </html>
