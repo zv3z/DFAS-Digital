@@ -12,3 +12,10 @@ export {
   ImageEngine,
   StegoEngine,
 } from './dfas-core';
+export {
+  MemoryEngine,
+  DiskEngine,
+  PcapEngine,
+  EndpointEngine,
+  YaraEnhancement,
+} from './dfas-forensics-engines';
