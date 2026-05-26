@@ -7,7 +7,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "DFAS — الرئيسية · نظام التحليل الجنائي الرقمي" },
-      { name: "description", content: "DFAS v2 منصة احترافية للتحليل الجنائي الرقمي وتعليم الأمن السيبراني." },
+      { name: "description", content: "DFAS v3 منصة احترافية للتحليل الجنائي الرقمي وتعليم الأمن السيبراني." },
       { property: "og:title", content: "DFAS — الرئيسية" },
       { property: "og:description", content: "10 وحدات تحليل متقدمة · معايير ISO/NIST/RFC" },
     ],
@@ -36,7 +36,7 @@ function Home() {
           </div>
 
           <h1 className="text-5xl lg:text-7xl font-bold tracking-tight glow-text-cyan animate-fade-up" style={{ animationDelay: ".05s" }}>
-            DFAS <span className="font-mono text-cyan">v2</span>
+            DFAS <span className="font-mono text-cyan">v3</span>
           </h1>
           <p className="mt-4 text-lg lg:text-xl text-foreground/80 animate-fade-up" style={{ animationDelay: ".15s" }}>
             نظام التحليل الجنائي الرقمي

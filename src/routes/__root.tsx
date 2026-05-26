@@ -52,14 +52,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "DFAS v2 — نظام التحليل الجنائي الرقمي" },
+      { title: "DFAS v3 — نظام التحليل الجنائي الرقمي" },
       { name: "description", content: "DFAS — منصة تحليل جنائي رقمي وتعليم الأمن السيبراني." },
       { name: "author", content: "DFAS" },
-      { property: "og:title", content: "DFAS v2 — Digital Forensics Analysis System" },
+      { property: "og:title", content: "DFAS v3 — Digital Forensics Analysis System" },
       { property: "og:description", content: "Arabic-first cybersecurity forensics dashboard." },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "stylesheet", href: appCss }],
+    links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
@@ -88,7 +91,7 @@ function RootComponent() {
           <TopBar onMenu={() => setOpen(true)} />
           <main className="flex-1"><Outlet /></main>
           <footer className="px-6 py-4 text-center text-[11px] text-muted-foreground font-mono border-t border-border">
-            DFAS v2.0 · ISO/IEC 27037 · NIST 800-86 · RFC 3227 · TLP:AMBER
+            DFAS v3.0 · ISO/IEC 27037 · NIST 800-86 · RFC 3227 · TLP:AMBER
           </footer>
         </div>
       </div>

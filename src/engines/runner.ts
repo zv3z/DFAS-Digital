@@ -6,6 +6,7 @@ import {
   PhishingEngine, UrlEngine, EmailEngine,
   HashEngine, IOCEngine, TimelineEngine,
   NetLogEngine, ATTACKEngine,
+  ImageEngine, StegoEngine,
 } from './dfas-core';
 import type { Finding, ThreatLevel, Severity } from './types';
 
@@ -292,6 +293,79 @@ async function runMitre(input: string): Promise<AnalysisResult> {
   };
 }
 
+// ── MOD-03 Image Forensics ────────────────────────
+async function runImage(file: File | null): Promise<AnalysisResult> {
+  const r = file ? await ImageEngine.analyze(file) : ImageEngine.analyzeDemo();
+  const v = threatToVerdict(r.threat, r.pct);
+  const findings: FindingItem[] = (r.indicators || []).map((ind: AnyObj) => ({
+    sev: ind.sev as FindingItem['sev'],
+    title: ind.rule || ind.label || '—',
+    desc: ind.det || '',
+    evidence: ind.ev || '',
+  }));
+  const meta = r.meta || {};
+  const t = meta.tags || {};
+  return {
+    pct: r.pct, threat: asThreatlevel(r.threat),
+    verdictTitle: v.title, verdictDesc: v.desc,
+    findings,
+    meta: [
+      { k:'معرّف التحليل', v: analysisId() },
+      { k:'المحرك', v:'ImageEngine v3.0 · EXIF + Binary Sigs' },
+      { k:'اسم الملف', v: meta.name || '—' },
+      { k:'الحجم', v: meta.size ? `${(meta.size/1024).toFixed(1)} KB` : '—' },
+      { k:'التنسيق', v: r.magic || meta.type || '—' },
+      { k:'الكاميرا', v: [t.Make, t.Model].filter(Boolean).join(' ') || '—' },
+      { k:'برنامج التحرير', v: t.Software || 'لا يوجد' },
+      { k:'تاريخ الالتقاط', v: t.DateTimeOriginal || '—' },
+      { k:'GPS', v: meta.gps ? `${meta.gps.lat}°N, ${meta.gps.lon}°E` : 'غير موجود' },
+      { k:'جودة JPEG', v: meta.jpegQuality !== null ? `~${meta.jpegQuality}%` : '—' },
+      { k:'التصنيف', v:'TLP:AMBER' },
+    ],
+    stats: [
+      { label:'المؤشرات', value: String(findings.length) },
+      { label:'جودة JPEG', value: meta.jpegQuality ? meta.jpegQuality + '%' : 'N/A' },
+      { label:'ثقة', value: r.pct + '%' },
+    ],
+    raw: r,
+  };
+}
+
+// ── MOD-07 Steganography ──────────────────────────
+async function runStego(file: File | null): Promise<AnalysisResult> {
+  const r = file ? await StegoEngine.analyze(file) : StegoEngine.analyzeSimulated();
+  const v = threatToVerdict(r.threat, r.pct);
+  const findings: FindingItem[] = (r.indicators || []).map((ind: AnyObj) => ({
+    sev: ind.sev as FindingItem['sev'],
+    title: ind.label || '—',
+    desc: ind.det || '',
+    evidence: ind.ev || '',
+  }));
+  const s = r.stats || {};
+  return {
+    pct: r.pct, threat: asThreatlevel(r.threat),
+    verdictTitle: v.title, verdictDesc: v.desc,
+    findings,
+    meta: [
+      { k:'معرّف التحليل', v: analysisId() },
+      { k:'المحرك', v:'StegoEngine v2.0 · LSB + Chi² + Entropy' },
+      { k:'الأبعاد', v: s.width && s.height ? `${s.width} × ${s.height} px` : '—' },
+      { k:'إجمالي البكسلات', v: s.pixels ? String(s.pixels) : '—' },
+      { k:'Shannon Entropy', v: s.entropy || '—' },
+      { k:'Chi-Square', v: s.chi || '—' },
+      { k:'LSB-R Ratio', v: s.lsbR ? (s.lsbR.ratio * 100).toFixed(1) + '%' : '—' },
+      { k:'LSB-G Ratio', v: s.lsbG ? (s.lsbG.ratio * 100).toFixed(1) + '%' : '—' },
+      { k:'التصنيف', v:'TLP:AMBER' },
+    ],
+    stats: [
+      { label:'المؤشرات', value: String(findings.length) },
+      { label:'Entropy', value: s.entropy || '—' },
+      { label:'ثقة', value: r.pct + '%' },
+    ],
+    raw: r,
+  };
+}
+
 // ── SAMPLE DATA for each module ───────────────────
 export const SAMPLES: Record<string, string> = {
   phishing: PhishingEngine.SAMPLE,
@@ -318,8 +392,9 @@ export async function runEngine(
     case 'timeline':   return runTimeline(input);
     case 'network':    return runNetLog(input);
     case 'mitre':      return runMitre(input);
-    // MOD-03 (Image) & MOD-07 (Stego) need canvas — handled in component
+    case 'image':      return runImage(file);
+    case 'stego':      return runStego(file);
     default:
-      return { pct:0, threat:'safe', verdictTitle:'وحدة تجريبية', verdictDesc:'هذه الوحدة تعمل مع ملفات الصور مباشرة.', findings:[], meta:[], stats:[] };
+      return { pct:0, threat:'safe', verdictTitle:'وحدة غير معرّفة', verdictDesc:'هذه الوحدة غير مدعومة حالياً.', findings:[], meta:[], stats:[] };
   }
 }

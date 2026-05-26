@@ -50,7 +50,8 @@ function ModuleView({ mod }: { mod: ModuleDef }) {
   }
 
   async function analyze() {
-    if (!input.trim() && !fileRef.current) return;
+    const isImageDemo = (mod.slug === "image" || mod.slug === "stego") && !fileRef.current;
+    if (!input.trim() && !fileRef.current && !isImageDemo) return;
     setPhase("running");
     setStep(0);
     setError(null);
@@ -147,7 +148,7 @@ function ModuleView({ mod }: { mod: ModuleDef }) {
         <div className="mt-5 flex items-center gap-3 flex-wrap">
           <button
             onClick={analyze}
-            disabled={phase === "running" || (!input.trim() && !fileRef.current)}
+            disabled={phase === "running" || (!input.trim() && !fileRef.current && mod.inputType !== "image")}
             className="px-6 py-2.5 rounded-lg bg-primary text-primary-foreground font-semibold glow-cyan hover:scale-[1.02] transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {phase === "running" ? "جاري التحليل…" : "▶ تشغيل التحليل"}
@@ -155,6 +156,15 @@ function ModuleView({ mod }: { mod: ModuleDef }) {
           {SAMPLES[mod.slug] && (
             <button onClick={loadSample} className="px-4 py-2.5 rounded-lg border border-primary/30 text-primary text-sm hover:bg-primary/10 transition">
               ← تحميل مثال
+            </button>
+          )}
+          {(mod.slug === "image" || mod.slug === "stego") && !fileRef.current && (
+            <button
+              onClick={analyze}
+              disabled={phase === "running"}
+              className="px-4 py-2.5 rounded-lg border border-warning/40 text-warning text-sm hover:bg-warning/10 transition"
+            >
+              ⚗ تحليل نموذجي
             </button>
           )}
           <button onClick={reset} className="px-4 py-2.5 rounded-lg border border-border text-sm hover:bg-surface-2 transition">
@@ -318,7 +328,7 @@ function FindingCard({ finding }: { finding: FindingItem }) {
 /* ── Export Report ── */
 function exportReport(result: AnalysisResult, mod: ModuleDef) {
   const lines = [
-    `# DFAS v2 — تقرير التحليل الجنائي`,
+    `# DFAS v3 — تقرير التحليل الجنائي`,
     `## ${mod.code} · ${mod.nameAr}`,
     ``,
     `**النتيجة:** ${result.verdictTitle}`,
@@ -331,7 +341,7 @@ function exportReport(result: AnalysisResult, mod: ModuleDef) {
     ...result.findings.map(f => `#### [${f.sev}] ${f.title}\n${f.desc}\n\`${f.evidence}\``),
     ``,
     `---`,
-    `TLP:AMBER · DFAS v2 · ISO/IEC 27037:2012`,
+    `TLP:AMBER · DFAS v3 · ISO/IEC 27037:2012`,
   ];
   const blob = new Blob([lines.join('\n')], { type: 'text/markdown' });
   const a = document.createElement('a');

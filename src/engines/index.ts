@@ -9,4 +9,6 @@ export {
   TimelineEngine,
   NetLogEngine,
   ATTACKEngine,
+  ImageEngine,
+  StegoEngine,
 } from './dfas-core';

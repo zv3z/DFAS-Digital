@@ -25,7 +25,7 @@ function About() {
         <div className="text-xs font-mono text-cyan tracking-widest">ABOUT · DFAS</div>
         <h1 className="text-3xl lg:text-4xl font-bold mt-1 glow-text-cyan">حول النظام</h1>
         <p className="text-sm text-muted-foreground mt-2 max-w-2xl">
-          DFAS v2 منصة احترافية للتحليل الجنائي الرقمي مُصمّمة لخدمة المحققين السيبرانيين والباحثين والطلاب في العالم العربي.
+          DFAS v3 منصة احترافية للتحليل الجنائي الرقمي مُصمّمة لخدمة المحققين السيبرانيين والباحثين والطلاب في العالم العربي.
         </p>
       </div>
 
@@ -49,10 +49,10 @@ function About() {
           </h2>
           <dl className="mt-4 space-y-3 text-sm">
             <Row k="الاسم"   v="DFAS — Digital Forensics Analysis System" />
-            <Row k="الإصدار" v="v2.0.3" />
+            <Row k="الإصدار" v="v3.0.0" />
             <Row k="اللغة"   v="العربية (RTL) · الإنجليزية" />
             <Row k="الترخيص" v="MIT · Educational" />
-            <Row k="المحرّك"  v="DFAS Engine v2" />
+            <Row k="المحرّك"  v="DFAS Engine v3 · 10 محركات" />
           </dl>
         </div>
 

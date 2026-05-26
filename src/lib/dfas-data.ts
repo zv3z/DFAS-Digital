@@ -22,7 +22,7 @@ export const MODULES: ModuleDef[] = [
   { id: "mod-06", code: "MOD-06", slug: "ioc",      icon: "🎯", nameAr: "ماسح مؤشرات الاختراق",    descAr: "استخراج عناوين IP والنطاقات والبصمات والعملات", inputType: "text", placeholder: "الصق النص لاستخراج IOCs..." },
   { id: "mod-07", code: "MOD-07", slug: "stego",    icon: "🔒", nameAr: "كاشف الإخفاء (Steganography)", descAr: "تحليل LSB لاكتشاف البيانات المخفية في الصور", inputType: "image" },
   { id: "mod-08", code: "MOD-08", slug: "timeline", icon: "⏱",  nameAr: "الخط الزمني الرقمي",      descAr: "استخراج الأختام الزمنية وكشف الشذوذ", inputType: "text", placeholder: "الصق السجلات أو ارفع ملفاً..." },
-  { id: "mod-09", code: "MOD-09", slug: "network",  icon: "🌐", nameAr: "محلل سجلات الشبكة",       descAr: "تحليل سجلات Apache / Nginx بشكل تلقائي", inputType: "log" },
+  { id: "mod-09", code: "MOD-09", slug: "network",  icon: "🌐", nameAr: "محلل سجلات الشبكة",       descAr: "تحليل سجلات Apache / Nginx بشكل تلقائي", inputType: "text", placeholder: "الصق سجلات Apache / Nginx هنا...\n192.168.1.1 - - [01/Jan/2024:12:00:00 +0000] \"GET / HTTP/1.1\" 200 1234" },
   { id: "mod-10", code: "MOD-10", slug: "mitre",    icon: "🎯", nameAr: "خريطة MITRE ATT&CK",      descAr: "تعيين السلوك على إطار MITRE ATT&CK", inputType: "text", placeholder: "صف السلوك أو الصق التقرير..." },
 ];
 

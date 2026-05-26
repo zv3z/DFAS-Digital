@@ -37,7 +37,7 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
             </div>
             <div>
               <div className="font-bold tracking-wider glow-text-cyan">DFAS</div>
-              <div className="text-[10px] text-muted-foreground font-mono">v2.0 · TLP:AMBER</div>
+              <div className="text-[10px] text-muted-foreground font-mono">v3.0 · TLP:AMBER</div>
             </div>
           </div>
         </div>
