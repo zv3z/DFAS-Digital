@@ -116,4 +116,55 @@ export interface MitreResult {
   pct: number;
 }
 
-export type AnyEngineResult = PhishingResult | UrlResult | ImageResult | EmailResult | HashResult | IOCResult | StegoResult | TimelineResult | NetLogResult | MitreResult;
+/* MOD-11 Memory Forensics (Volatility-inspired) */
+export interface MemoryResult extends EngineResult {
+  findings: Finding[];
+  isVolatilityOutput: boolean;
+  processCount: number;
+  stats: {
+    totalFindings: number;
+    critical: number;
+    high: number;
+    injectionIndicators: number;
+  };
+}
+
+/* MOD-12 Disk Image Analyzer (Sleuth Kit-inspired) */
+export interface DiskResult extends EngineResult {
+  findings: Finding[];
+  detectedFS: string;
+  entropy?: number;
+  fileSize?: number;
+  isTSKOutput?: boolean;
+  stats: {
+    totalFindings: number;
+    critical?: number;
+    high?: number;
+  };
+}
+
+/* MOD-13 PCAP / Network Traffic Analyzer (Tshark-inspired) */
+export interface PcapResult extends EngineResult {
+  findings: Finding[];
+  stats: {
+    totalPackets: number | null;
+    uniqueIPs: number;
+    badIPs: number;
+    beaconTargets: number;
+  };
+}
+
+/* MOD-14 Endpoint Telemetry (Velociraptor-inspired) */
+export interface EndpointResult extends EngineResult {
+  findings: Finding[];
+  stats: {
+    totalFindings: number;
+    critical: number;
+    high: number;
+    persistenceIndicators: number;
+    credentialIndicators: number;
+    mitreMapping: string[];
+  };
+}
+
+export type AnyEngineResult = PhishingResult | UrlResult | ImageResult | EmailResult | HashResult | IOCResult | StegoResult | TimelineResult | NetLogResult | MitreResult | MemoryResult | DiskResult | PcapResult | EndpointResult;

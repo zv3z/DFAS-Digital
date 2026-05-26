@@ -8,6 +8,13 @@ import {
   NetLogEngine, ATTACKEngine,
   ImageEngine, StegoEngine,
 } from './dfas-core';
+import {
+  MemoryEngine,
+  DiskEngine,
+  PcapEngine,
+  EndpointEngine,
+  YaraEnhancement,
+} from './dfas-forensics-engines';
 import type { Finding, ThreatLevel, Severity } from './types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -366,6 +373,159 @@ async function runStego(file: File | null): Promise<AnalysisResult> {
   };
 }
 
+// ── MOD-11 Memory Forensics ───────────────────────
+async function runMemory(input: string): Promise<AnalysisResult> {
+  const r = MemoryEngine.analyze(input);
+  const v = threatToVerdict(r.threat, r.pct);
+  // Also run YARA enhancement
+  const yaraHits = YaraEnhancement.scan(input);
+  const yaraFindings: FindingItem[] = yaraHits.map((hit: AnyObj) => ({
+    sev: hit.sev as FindingItem['sev'],
+    title: `[YARA] ${hit.rule} — ${hit.category}`,
+    desc: hit.description,
+    evidence: hit.matchedStrings.slice(0, 2).join(' | '),
+  }));
+  const allFindings = [...(r.findings || []).map((f: AnyObj) => ({
+    sev: f.sev as FindingItem['sev'],
+    title: f.label || '—',
+    desc: f.det || '',
+    evidence: f.ev || '',
+  })), ...yaraFindings];
+  const adjustedPct = Math.min(r.pct + yaraHits.length * 5, 99);
+  return {
+    pct: adjustedPct,
+    threat: asThreatlevel(adjustedPct >= 70 ? 'crit' : adjustedPct >= 35 ? 'warn' : 'safe'),
+    verdictTitle: threatToVerdict(adjustedPct >= 70 ? 'crit' : adjustedPct >= 35 ? 'warn' : 'safe', adjustedPct).title,
+    verdictDesc: v.desc,
+    findings: allFindings,
+    meta: [
+      { k: 'معرّف التحليل', v: analysisId() },
+      { k: 'المحرك', v: 'MemoryEngine v1.0 · Volatility3-inspired' },
+      { k: 'مخرجات Volatility', v: r.isVolatilityOutput ? '✓ مُكتشفة' : 'لا' },
+      { k: 'عمليات مُكتشفة', v: String(r.processCount) },
+      { k: 'مؤشرات حقن', v: String(r.stats.injectionIndicators) },
+      { k: 'تطابقات YARA', v: String(yaraHits.length) },
+      { k: 'التصنيف', v: 'TLP:RED' },
+    ],
+    stats: [
+      { label: 'إجمالي المؤشرات', value: String(allFindings.length) },
+      { label: 'حرجة', value: String(r.stats.critical + yaraHits.filter((h: AnyObj) => h.sev === 'CRITICAL').length) },
+      { label: 'ثقة', value: adjustedPct + '%' },
+    ],
+    raw: r,
+  };
+}
+
+// ── MOD-12 Disk Image Analyzer ────────────────────
+async function runDisk(file: File | null, input: string): Promise<AnalysisResult> {
+  const r = await DiskEngine.analyze(file || input);
+  const v = threatToVerdict(r.threat, r.pct);
+  return {
+    pct: r.pct,
+    threat: asThreatlevel(r.threat),
+    verdictTitle: v.title,
+    verdictDesc: v.desc,
+    findings: (r.findings || []).map((f: AnyObj) => ({
+      sev: f.sev as FindingItem['sev'],
+      title: f.label || '—',
+      desc: f.det || '',
+      evidence: f.ev || '',
+    })),
+    meta: [
+      { k: 'معرّف التحليل', v: analysisId() },
+      { k: 'المحرك', v: 'DiskEngine v1.0 · Sleuth Kit-inspired' },
+      { k: 'نظام الملفات', v: r.detectedFS || 'غير معروف' },
+      { k: 'حجم الملف', v: r.fileSize ? `${(r.fileSize / 1024 / 1024).toFixed(2)} MB` : '—' },
+      { k: 'الإنتروبيا', v: r.entropy !== undefined ? r.entropy.toFixed(3) + ' bits' : '—' },
+      { k: 'مخرجات TSK', v: r.isTSKOutput ? '✓ مُكتشفة' : 'لا' },
+      { k: 'التصنيف', v: 'TLP:AMBER' },
+    ],
+    stats: [
+      { label: 'إجمالي المؤشرات', value: String(r.stats.totalFindings) },
+      { label: 'نظام الملفات', value: r.detectedFS || '—' },
+      { label: 'ثقة', value: r.pct + '%' },
+    ],
+    raw: r,
+  };
+}
+
+// ── MOD-13 PCAP / Network Traffic ────────────────
+async function runPcap(input: string): Promise<AnalysisResult> {
+  const r = PcapEngine.analyze(input);
+  const v = threatToVerdict(r.threat, r.pct);
+  return {
+    pct: r.pct,
+    threat: asThreatlevel(r.threat),
+    verdictTitle: v.title,
+    verdictDesc: v.desc,
+    findings: (r.findings || []).map((f: AnyObj) => ({
+      sev: f.sev as FindingItem['sev'],
+      title: f.label || '—',
+      desc: f.det || '',
+      evidence: f.ev || '',
+    })),
+    meta: [
+      { k: 'معرّف التحليل', v: analysisId() },
+      { k: 'المحرك', v: 'PcapEngine v1.0 · Tshark-inspired' },
+      { k: 'إجمالي الحزم', v: r.stats.totalPackets !== null ? String(r.stats.totalPackets) : '—' },
+      { k: 'عناوين IP الفريدة', v: String(r.stats.uniqueIPs) },
+      { k: 'IPs خبيثة مُكتشفة', v: String(r.stats.badIPs) },
+      { k: 'أهداف C2 Beacon', v: String(r.stats.beaconTargets) },
+      { k: 'التصنيف', v: 'TLP:AMBER' },
+    ],
+    stats: [
+      { label: 'IPs خبيثة', value: String(r.stats.badIPs) },
+      { label: 'C2 Beacons', value: String(r.stats.beaconTargets) },
+      { label: 'ثقة', value: r.pct + '%' },
+    ],
+    raw: r,
+  };
+}
+
+// ── MOD-14 Endpoint Telemetry ─────────────────────
+async function runEndpoint(input: string): Promise<AnalysisResult> {
+  const r = EndpointEngine.analyze(input);
+  const v = threatToVerdict(r.threat, r.pct);
+  // Also run YARA enhancement
+  const yaraHits = YaraEnhancement.scan(input);
+  const allFindings = [
+    ...(r.findings || []).map((f: AnyObj) => ({
+      sev: f.sev as FindingItem['sev'],
+      title: f.label || '—',
+      desc: f.det || '',
+      evidence: f.ev || '',
+    })),
+    ...yaraHits.map((hit: AnyObj) => ({
+      sev: hit.sev as FindingItem['sev'],
+      title: `[YARA] ${hit.rule}`,
+      desc: hit.description,
+      evidence: hit.matchedStrings.slice(0, 2).join(' | '),
+    })),
+  ];
+  return {
+    pct: r.pct,
+    threat: asThreatlevel(r.threat),
+    verdictTitle: v.title,
+    verdictDesc: v.desc,
+    findings: allFindings,
+    meta: [
+      { k: 'معرّف التحليل', v: analysisId() },
+      { k: 'المحرك', v: 'EndpointEngine v1.0 · Velociraptor-inspired' },
+      { k: 'مؤشرات الاستمرارية', v: String(r.stats.persistenceIndicators) },
+      { k: 'مؤشرات سرقة بيانات الاعتماد', v: String(r.stats.credentialIndicators) },
+      { k: 'تقنيات MITRE ATT&CK', v: String(r.stats.mitreMapping.length) },
+      { k: 'تطابقات YARA', v: String(yaraHits.length) },
+      { k: 'التصنيف', v: 'TLP:RED' },
+    ],
+    stats: [
+      { label: 'إجمالي المؤشرات', value: String(allFindings.length) },
+      { label: 'تقنيات ATT&CK', value: String(r.stats.mitreMapping.length) },
+      { label: 'ثقة', value: r.pct + '%' },
+    ],
+    raw: r,
+  };
+}
+
 // ── SAMPLE DATA for each module ───────────────────
 export const SAMPLES: Record<string, string> = {
   phishing: PhishingEngine.SAMPLE,
@@ -375,6 +535,10 @@ export const SAMPLES: Record<string, string> = {
   timeline: TimelineEngine.SAMPLE,
   network: NetLogEngine.SAMPLE,
   mitre: ATTACKEngine.SAMPLE_TEXT,
+  memory: MemoryEngine.SAMPLE,
+  disk: DiskEngine.SAMPLE,
+  pcap: PcapEngine.SAMPLE,
+  endpoint: EndpointEngine.SAMPLE,
 };
 
 // ── Unified Run Function ──────────────────────────
@@ -394,6 +558,10 @@ export async function runEngine(
     case 'mitre':      return runMitre(input);
     case 'image':      return runImage(file);
     case 'stego':      return runStego(file);
+    case 'memory':     return runMemory(input);
+    case 'disk':       return runDisk(file, input);
+    case 'pcap':       return runPcap(input);
+    case 'endpoint':   return runEndpoint(input);
     default:
       return { pct:0, threat:'safe', verdictTitle:'وحدة غير معرّفة', verdictDesc:'هذه الوحدة غير مدعومة حالياً.', findings:[], meta:[], stats:[] };
   }
