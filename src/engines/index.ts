@@ -1,5 +1,5 @@
-export * from './types';
-export * from './runner';
+export * from "./types";
+export * from "./runner";
 export {
   PhishingEngine,
   UrlEngine,
@@ -11,11 +11,11 @@ export {
   ATTACKEngine,
   ImageEngine,
   StegoEngine,
-} from './dfas-core';
+} from "./dfas-core";
 export {
   MemoryEngine,
   DiskEngine,
   PcapEngine,
   EndpointEngine,
   YaraEnhancement,
-} from './dfas-forensics-engines';
+} from "./dfas-forensics-engines";

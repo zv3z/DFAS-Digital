@@ -16,12 +16,17 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
   const path = useRouterState({ select: (r) => r.location.pathname });
   const now = useClock();
   const time = now ? now.toLocaleTimeString("en-GB", { hour12: false }) : "──:──:──";
-  const date = now ? now.toLocaleDateString("ar-EG", { day: "2-digit", month: "short", year: "numeric" }) : "── ─── ────";
+  const date = now
+    ? now.toLocaleDateString("ar-EG", { day: "2-digit", month: "short", year: "numeric" })
+    : "── ─── ────";
 
   return (
     <>
       {open && (
-        <div onClick={onClose} className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden" />
+        <div
+          onClick={onClose}
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
+        />
       )}
       <aside
         className={[
@@ -60,7 +65,9 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
               >
                 <span className="text-lg w-6 text-center">{n.icon}</span>
                 <span className="font-medium">{n.label}</span>
-                {active && <span className="mr-auto w-1.5 h-1.5 rounded-full bg-primary glow-cyan" />}
+                {active && (
+                  <span className="mr-auto w-1.5 h-1.5 rounded-full bg-primary glow-cyan" />
+                )}
               </Link>
             );
           })}
@@ -69,11 +76,15 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
         <div className="p-4 border-t border-border space-y-3">
           <div className="glass rounded-lg p-3 space-y-1.5">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] text-muted-foreground uppercase tracking-wider">الوقت</span>
+              <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                الوقت
+              </span>
               <span className="font-mono text-sm text-cyan">{time}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-[10px] text-muted-foreground uppercase tracking-wider">التاريخ</span>
+              <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                التاريخ
+              </span>
               <span className="font-mono text-[11px]">{date}</span>
             </div>
           </div>

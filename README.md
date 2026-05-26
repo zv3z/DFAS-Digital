@@ -36,18 +36,18 @@ src/
 
 ## ⚙️ المحركات المُدمجة
 
-| Module | Slug | المحرك | نوع المدخل |
-|--------|------|--------|------------|
-| MOD-01 | phishing | PhishingEngine | نص عربي |
-| MOD-02 | url | UrlEngine | رابط URL |
-| MOD-03 | image | ImageEngine* | صورة |
-| MOD-04 | email | EmailEngine | ترويسات بريد |
-| MOD-05 | fingerprint | HashEngine | ملف |
-| MOD-06 | ioc | IOCEngine | نص |
-| MOD-07 | stego | StegoEngine* | صورة |
-| MOD-08 | timeline | TimelineEngine | نص/سجلات |
-| MOD-09 | network | NetLogEngine | سجل شبكة |
-| MOD-10 | mitre | ATTACKEngine | نص |
+| Module | Slug        | المحرك         | نوع المدخل   |
+| ------ | ----------- | -------------- | ------------ |
+| MOD-01 | phishing    | PhishingEngine | نص عربي      |
+| MOD-02 | url         | UrlEngine      | رابط URL     |
+| MOD-03 | image       | ImageEngine\*  | صورة         |
+| MOD-04 | email       | EmailEngine    | ترويسات بريد |
+| MOD-05 | fingerprint | HashEngine     | ملف          |
+| MOD-06 | ioc         | IOCEngine      | نص           |
+| MOD-07 | stego       | StegoEngine\*  | صورة         |
+| MOD-08 | timeline    | TimelineEngine | نص/سجلات     |
+| MOD-09 | network     | NetLogEngine   | سجل شبكة     |
+| MOD-10 | mitre       | ATTACKEngine   | نص           |
 
 > \* MOD-03 و MOD-07 يحتاجان Canvas API (تعمل في المتصفح مباشرة)
 
