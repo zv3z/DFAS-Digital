@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import { NAV } from "@/lib/dfas-data";
 
 function useClock() {
-  const [now, setNow] = useState(() => new Date());
+  const [now, setNow] = useState<Date | null>(null);
   useEffect(() => {
+    setNow(new Date());
     const i = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(i);
   }, []);
@@ -14,8 +15,8 @@ function useClock() {
 export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
   const path = useRouterState({ select: (r) => r.location.pathname });
   const now = useClock();
-  const time = now.toLocaleTimeString("en-GB", { hour12: false });
-  const date = now.toLocaleDateString("ar-EG", { day: "2-digit", month: "short", year: "numeric" });
+  const time = now ? now.toLocaleTimeString("en-GB", { hour12: false }) : "──:──:──";
+  const date = now ? now.toLocaleDateString("ar-EG", { day: "2-digit", month: "short", year: "numeric" }) : "── ─── ────";
 
   return (
     <>
