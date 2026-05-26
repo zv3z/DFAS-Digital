@@ -5,9 +5,9 @@ export const Route = createFileRoute("/modules/")({
   head: () => ({
     meta: [
       { title: "DFAS · وحدات التحليل" },
-      { name: "description", content: "10 وحدات تحليل جنائي متخصصة لكشف التهديدات السيبرانية." },
+      { name: "description", content: "14 وحدة تحليل جنائي متخصصة لكشف التهديدات السيبرانية." },
       { property: "og:title", content: "DFAS · وحدات التحليل" },
-      { property: "og:description", content: "تصيد، روابط، صور، ترويسات، بصمة، IOC، إخفاء، خط زمني، شبكة، MITRE." },
+      { property: "og:description", content: "تصيد، روابط، صور، ترويسات، بصمة، IOC، إخفاء، خط زمني، شبكة، MITRE، ذاكرة، أقراص، PCAP، نقاط النهاية." },
     ],
   }),
   component: ModulesIndex,
@@ -19,7 +19,7 @@ function ModulesIndex() {
       <div className="mb-8">
         <div className="text-xs font-mono text-cyan tracking-widest">FORENSICS · TOOLKIT</div>
         <h1 className="text-2xl lg:text-3xl font-bold mt-1">وحدات التحليل</h1>
-        <p className="text-sm text-muted-foreground mt-1">عشر وحدات متخصصة تغطي طيف التحقيق الجنائي الرقمي.</p>
+        <p className="text-sm text-muted-foreground mt-1">أربع عشرة وحدة متخصصة تغطي طيف التحقيق الجنائي الرقمي.</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

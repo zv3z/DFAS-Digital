@@ -180,7 +180,7 @@ function ModuleView({ mod }: { mod: ModuleDef }) {
           <div className="mt-5 space-y-2">
             <div className="h-1.5 bg-surface-2 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-l from-primary to-info transition-all duration-500"
+                className="h-full bg-linear-to-l from-primary to-info transition-all duration-500"
                 style={{ width: `${(step / STEPS.length) * 100}%` }}
               />
             </div>
@@ -275,7 +275,7 @@ function VerdictCard({ result }: { result: AnalysisResult }) {
 
   return (
     <div className={`lg:col-span-2 glass rounded-xl p-6 relative overflow-hidden ${glowClass}`}>
-      <div className={`absolute inset-0 bg-gradient-to-l ${gradClass} to-transparent`} />
+      <div className={`absolute inset-0 bg-linear-to-l ${gradClass} to-transparent`} />
       <div className="relative">
         <div className="flex items-center gap-2">
           <SeverityBadge level={level} pulse={result.threat === "crit"} />

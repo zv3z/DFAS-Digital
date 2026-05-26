@@ -52,7 +52,7 @@ function About() {
             <Row k="الإصدار" v="v3.0.0" />
             <Row k="اللغة"   v="العربية (RTL) · الإنجليزية" />
             <Row k="الترخيص" v="MIT · Educational" />
-            <Row k="المحرّك"  v="DFAS Engine v3 · 10 محركات" />
+            <Row k="المحرّك"  v="DFAS Engine v3 · 14 محرك" />
           </dl>
         </div>
 
@@ -62,7 +62,7 @@ function About() {
             <span className="w-1 h-5 bg-primary rounded glow-cyan" /> فريق التطوير
           </h2>
           <div className="mt-4 flex items-center gap-4">
-            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-info grid place-items-center font-mono font-bold text-xl glow-cyan">DF</div>
+            <div className="w-14 h-14 rounded-full bg-linear-to-br from-primary to-info grid place-items-center font-mono font-bold text-xl glow-cyan">DF</div>
             <div>
               <div className="font-semibold">فريق DFAS</div>
               <div className="text-xs text-muted-foreground font-mono">research@dfas.local</div>

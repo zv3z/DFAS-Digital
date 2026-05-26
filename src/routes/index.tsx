@@ -7,9 +7,9 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "DFAS — الرئيسية · نظام التحليل الجنائي الرقمي" },
-      { name: "description", content: "DFAS v3 منصة احترافية للتحليل الجنائي الرقمي وتعليم الأمن السيبراني." },
+      { name: "description", content: "DFAS v3 — 14 وحدة تحليل جنائي رقمي احترافية للمحققين السيبرانيين العرب." },
       { property: "og:title", content: "DFAS — الرئيسية" },
-      { property: "og:description", content: "10 وحدات تحليل متقدمة · معايير ISO/NIST/RFC" },
+      { property: "og:description", content: "14 وحدة تحليل متقدمة · معايير ISO/NIST/RFC" },
     ],
   }),
   component: Home,
@@ -108,7 +108,7 @@ function Home() {
                 <span>بدء التحليل</span>
                 <span className="transition-transform group-hover:-translate-x-1">←</span>
               </div>
-              <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-l from-transparent via-primary to-transparent opacity-0 group-hover:opacity-100 transition" />
+              <div className="absolute inset-x-0 bottom-0 h-px bg-linear-to-l from-transparent via-primary to-transparent opacity-0 group-hover:opacity-100 transition" />
             </Link>
           ))}
         </div>
