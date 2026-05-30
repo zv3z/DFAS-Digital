@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ReportRouteImport } from './routes/report'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CasesRouteImport } from './routes/cases'
 import { Route as AboutRouteImport } from './routes/about'
@@ -16,6 +17,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ModulesIndexRouteImport } from './routes/modules.index'
 import { Route as ModulesSlugRouteImport } from './routes/modules.$slug'
 
+const ReportRoute = ReportRouteImport.update({
+  id: '/report',
+  path: '/report',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/cases': typeof CasesRoute
   '/dashboard': typeof DashboardRoute
+  '/report': typeof ReportRoute
   '/modules/$slug': typeof ModulesSlugRoute
   '/modules/': typeof ModulesIndexRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/cases': typeof CasesRoute
   '/dashboard': typeof DashboardRoute
+  '/report': typeof ReportRoute
   '/modules/$slug': typeof ModulesSlugRoute
   '/modules': typeof ModulesIndexRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/cases': typeof CasesRoute
   '/dashboard': typeof DashboardRoute
+  '/report': typeof ReportRoute
   '/modules/$slug': typeof ModulesSlugRoute
   '/modules/': typeof ModulesIndexRoute
 }
@@ -79,16 +88,25 @@ export interface FileRouteTypes {
     | '/about'
     | '/cases'
     | '/dashboard'
+    | '/report'
     | '/modules/$slug'
     | '/modules/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/cases' | '/dashboard' | '/modules/$slug' | '/modules'
+  to:
+    | '/'
+    | '/about'
+    | '/cases'
+    | '/dashboard'
+    | '/report'
+    | '/modules/$slug'
+    | '/modules'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/cases'
     | '/dashboard'
+    | '/report'
     | '/modules/$slug'
     | '/modules/'
   fileRoutesById: FileRoutesById
@@ -98,12 +116,20 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   CasesRoute: typeof CasesRoute
   DashboardRoute: typeof DashboardRoute
+  ReportRoute: typeof ReportRoute
   ModulesSlugRoute: typeof ModulesSlugRoute
   ModulesIndexRoute: typeof ModulesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/report': {
+      id: '/report'
+      path: '/report'
+      fullPath: '/report'
+      preLoaderRoute: typeof ReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
@@ -154,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   CasesRoute: CasesRoute,
   DashboardRoute: DashboardRoute,
+  ReportRoute: ReportRoute,
   ModulesSlugRoute: ModulesSlugRoute,
   ModulesIndexRoute: ModulesIndexRoute,
 }

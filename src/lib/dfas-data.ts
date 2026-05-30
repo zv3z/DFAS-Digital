@@ -174,5 +174,6 @@ export const NAV = [
   { to: "/dashboard", label: "لوحة التحكم", icon: "▦" },
   { to: "/modules", label: "الوحدات", icon: "◈" },
   { to: "/cases", label: "القضايا", icon: "⛬" },
+  { to: "/report", label: "تقرير المشروع", icon: "📋" },
   { to: "/about", label: "حول النظام", icon: "ⓘ" },
 ] as const;
