@@ -1787,6 +1787,7 @@ export const ImageEngine = (() => {
           magic,
         });
       };
+      fr.onerror = () => resolve(analyzeDemo());
       fr.readAsArrayBuffer(file.slice(0, 196608));
     });
   }
