@@ -273,7 +273,12 @@ async function runTimeline(input: string): Promise<AnalysisResult> {
         : a.type === "future"
           ? "طابع زمني يتجاوز الوقت الحالي — مؤشر تلاعب"
           : "نشاط بين منتصف الليل والفجر",
-    evidence: a.event ? a.event.raw : "",
+    evidence:
+      a.type === "gap" && Array.isArray(a.events)
+        ? `${a.events[0]?.raw ?? ""} → ${a.events[1]?.raw ?? ""}`
+        : a.event
+          ? a.event.raw
+          : "",
   }));
   return {
     pct: r.pct,
@@ -315,6 +320,7 @@ async function runNetLog(input: string): Promise<AnalysisResult> {
       { k: "الطلبات المُحللة", v: String(r.stats.parsed) },
       { k: "مسارات استغلال", v: String(r.stats.exploitPaths) },
       { k: "ماسحات مُكتشفة", v: String(r.stats.scannerCount) },
+      { k: "التصنيف", v: "TLP:AMBER" },
     ],
     stats: [
       { label: "الطلبات", value: String(r.stats.totalReq) },

@@ -79,9 +79,10 @@ function ModuleView({ mod }: { mod: ModuleDef }) {
     }, 450);
 
     try {
+      const startTime = Date.now();
       const res = await runEngine(mod.slug, input, fileRef.current);
-      // Wait for animation to finish
-      await new Promise((r) => setTimeout(r, STEPS.length * 450 + 200));
+      const remaining = Math.max(0, STEPS.length * 450 + 200 - (Date.now() - startTime));
+      if (remaining > 0) await new Promise((r) => setTimeout(r, remaining));
       setResult(res);
       setPhase("done");
     } catch (e) {
@@ -423,8 +424,12 @@ function exportReport(result: AnalysisResult, mod: ModuleDef) {
     `TLP:AMBER · DFAS v3 · ISO/IEC 27037:2012`,
   ];
   const blob = new Blob([lines.join("\n")], { type: "text/markdown" });
+  const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
+  a.href = url;
   a.download = `DFAS-Report-${mod.code}-${Date.now()}.md`;
+  document.body.appendChild(a);
   a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }

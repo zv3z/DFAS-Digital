@@ -448,7 +448,7 @@ export const DiskEngine = (() => {
       label: "أداة حذف آمن (إخفاء الأدلة)",
     },
     {
-      re: /timestomp|$SI.*creation.*$FN/i,
+      re: /timestomp|\$SI.*creation.*\$FN/i,
       sev: "CRITICAL",
       label: "Timestomping — تلاعب في أختام NTFS الزمنية",
     },
